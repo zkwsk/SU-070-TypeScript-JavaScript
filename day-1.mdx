@@ -1,0 +1,406 @@
+import { CodePane } from 'spectacle';
+import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
+
+# Typescript/Javascript Programmering
+
+---
+# Introduktion
+
+ - Meet and greet
+ - Forventningsafstemning
+
+---
+# Bogmærker
+
+- Official documentation: [typescriptlang.org](https://www.typescriptlang.org/docs/)
+- Typescript Deep Dive: [basarat.gitbook.io/typescript](https://basarat.gitbook.io/typescript/)
+- Jack Herrington [Youtube channel](https://www.youtube.com/watch?v=j92fxPpFaL8&list=PLNqp92_EXZBIKO8lqN3089jgZUi-FUFXX)
+- Typescript Playground: https://www.typescriptlang.org/play
+- [Code Sandbox](https://codesandbox.io/)
+- [Can I Use](https://caniuse.com/)
+
+---
+# Hvad er Javascript/Ecmascript?
+
+- Født i browseren
+- Dynamisk typed (run-time)
+- Fortolket/Interpreted
+- Funktionelt- og objektorienteret
+- Event-drevet
+- Bundet af browser kompatibilitet
+
+---
+# Tidslinie
+
+- 1997: Ecmascript
+- ES4 droppet
+- 2009: ES5
+- 2009: Første release af Node.js
+- 2015: ES6 - "Next generation javascript"
+- 2016-2022: Løbende årlige udgivelser: ES7, ES8, ES9, ES10, ES11, ES12, ES13
+
+---
+# Hvad er Typescript?
+
+- Supersæt af Javascript
+- Strongly typed
+- Typescript compileres/transpileres til javascript
+- "Normaliseret" kode 
+
+---
+# Hvorfor Typescript?
+
+- Tillid
+- Hurtige feedback loops 
+  - Compile-time fejl
+  - Feedback i editor
+  - "Fail fast"
+- Behov for mindre valideringslogik og unit tests
+- Future javascript now
+
+---
+# Værktøjskasse
+
+- Installer NPM og Node.JS
+- Installer Yarn
+- Installer VSCode
+
+---
+# NPM
+
+NPM er ansvarlig for pakkestyring (package manager) i Javascript. Vi vil bruge NPM til at installere og styre afhængigheder. Sørg for at have Node.js v.16.x (LTS) installeret.
+
+[Download Node.js](https://nodejs.org/en/download/)
+
+Du kan også anvende en Linux/Unix package manager til at installere Node.js. F.eks. [HomeBrew](https://brew.sh/) på Mac eller [APT](https://ubuntu.com/server/docs/package-management) på Linux.
+
+---
+# Yarn
+
+- Yarn er et "lag" ovenpå NPM som tilbyder nogle forbedringer i forhold til bl.a. performance.
+- Yarn er ikke et krav, men kodeeksempler i kurset vil tage udgangspunkt i Yarn, da Yarn har bevæget sig i retning af at blive den nye industri standard for udvikling i Javascript.
+
+Installere Yarn globalt:
+
+<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+$ npm install yarn --global
+`}
+</CodePane>
+
+---
+# VSCode
+
+VSCode er ikke et krav (du kan f.eks. bruge WebStorm, eller terminal/VIM), MEN...
+- VSCode er "bredt accepteret" som den bedste kode-editor og IDE
+- God Typescript support
+- Kører på alle platforme (og i browser med Github Codespaces)
+
+Derfor tager kurset udgangspunkt at bruge VSCode.
+
+[Download VSCode](https://code.visualstudio.com/download)
+
+---
+# Typescript - hurtigt igang
+
+- [Typescript Playground](https://www.typescriptlang.org/play)
+- [Code Sandbox](https://codesandbox.io/)
+
+---
+# Typescript lokalt projekt
+
+For at starte at basis Typescript projekt lokalt, kan du køre:
+
+<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+$ mkdir typescript-test-project && cd $_
+$ yarn add typescript --dev
+$ yarn tsc --init
+$ tsc [your-file.ts]
+`}
+</CodePane>
+
+---
+# tsconfig.json (1/5)
+
+Du kan køre `tsc` med "flag" for eksempel:
+
+<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+$ tsc app.ts util.ts --target esnext --outfile index.js
+`}
+</CodePane>
+
+Hvilket "bygger" filerne `app.ts` og `util.ts` og sætter dem sammen til en enkelt fil, `index.js`
+
+---
+# tsconfig.json (2/5)
+
+Det er ikke praktisk at holde styr på alle compiler options med flag.
+
+<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+$ tsc --init app.ts util.ts --target esnext --outfile index.js
+`}
+</CodePane>
+
+Med `--init` flaget kan du automatisk oprette en konfigurationsfil, tsconfig.json, hvor de flag du har sat bliver gemt.
+
+---
+# tsconfig.json (3/5)
+
+Hvis du kører tsc uden options vil typescript compileren kigger efter en tsconfig.json fil og anvende de options der er angivet.
+
+Hvis du checker tsconfig.json ind i Git og sørger for at alle fremtidige ændringer opdateres i filen, er du sikker på at dine kolleger compiler med samme options som dig.
+
+---
+# tsconfig.json (4/5)
+
+- `tsconfig.json` kan være intimiderende
+- Dokumentation: [typescriptlang.org/tsconfig](https://www.typescriptlang.org/tsconfig)
+- Vigtige options:
+  - files
+  - include
+  - exclude
+  - outDir / outFile
+
+---
+# tsconfig.json (5/5)
+
+- Vigtige options (fortsat):
+  - target
+  - extends
+  - lib
+  - sourceMap
+  - watchMode
+  - allowJS / checkJS
+
+---
+# Linting
+
+- Eslint
+- Tslint
+- Prettier
+
+---
+# Poetic
+
+Poetic er en NPM pakke der gør det nemt at installere og konfigurere linters og prettier med forudbestemte basisindstillinger:
+
+https://www.npmjs.com/package/poetic
+
+<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+$ npx poetic
+`}
+</CodePane>
+
+---
+# TS Node
+
+Med `ts-node` kan vi afvikle typescipt filer i et servermiljø eller vi kan starte en REPL for at eksperimentere og afprøve ting.
+
+Afvikle en fil:
+<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+$ npx ts-node file.ts
+`}
+</CodePane>
+
+Starte en REPL:
+<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+$ npx ts-node
+`}
+</CodePane>
+
+---
+# Javascript/Typescript syntaks
+
+I den følgende sektion gennemgår vi grundlæggende syntaks der gælder for både javascript i Typescript.
+
+---
+# Equality
+
+- Loosely equal: `==`
+- Strictly equal: `===`
+
+[MDN: Equality comparisons and sameness](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness)
+
+---
+# Kontrolstrukturer - if
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+if (userInput % 2) {
+  /* Hvis user input er ulige */
+  return 'a';
+}
+`}
+</CodePane>
+
+---
+# Kontrolstrukturer - if/else
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+if (userInput % 2) {
+  /* Hvis user input er ulige */
+  return 'a';
+} else {
+  /* Hvis user input er ulige */
+  return 'b';
+}
+`}
+</CodePane>
+---
+# Ternary operator
+
+Samme princip som `if/else` men på en linie:
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+return userInput % 2 ? 'a' : 'b';
+`}
+</CodePane>
+---
+# AND/OR
+
+AND:
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+return a && b;
+`}
+</CodePane>
+
+OR:
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+return a || b;
+`}
+</CodePane>
+
+---
+# Nullish coalescing operator
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+let accountAmount = 0;
+return accountAmount || 'No account found'; // 'No account found'
+...
+let accountAmount = 0;
+return accountAmount ?? 'No account found'; // 0
+`}
+</CodePane>
+
+[Video by Web Dev Simplified](https://youtu.be/v2tJ3nzXh8I?t=41)
+
+---
+# Guard clauses (1/2)
+
+Without guard clause:
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+function processRequest(paramA, paramB) {
+  if (typeof paramA !== 'undefined' || typeof paramB !== 'undefined' ) {
+    const result = paramA + paramB;
+    return result;
+  } else {
+    return null;
+  }
+}
+`}
+</CodePane>
+
+---
+# Guard clauses (2/2)
+
+With guard clause:
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+function processRequest(paramA, paramB) {
+  if (typeof paramA === 'undefined' || typeof paramB === 'undefined' ) {
+    return null;
+  }
+  return paramA + paramB;
+}
+`}
+</CodePane>
+
+[Video by Web Dev Simplified](https://www.youtube.com/watch?v=EumXak7TyQ0)
+---
+# Objekter
+
+- Objekter
+- Indlejrede objekter (nesting)
+- json
+ 
+---
+# Funktioner (1/3)
+
+- Navn
+- Parametre/argumenter
+- Returværdi
+
+---
+# Funktioner (2/3)
+
+"function" syntaks:
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+function sum(a, b) { return a + b }
+`}
+</CodePane>
+
+Anonym funktion:
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+(a, b) {return a + b }
+`}
+</CodePane>
+
+"Arrow" syntaks:
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+const sum = (a, b) => { return a + b }
+`}
+</CodePane>
+
+---
+# Funktioner (3/3)
+
+Det kaldes en metode når en objekt- eller klasse property har en funktion som værdi:
+
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+const someObject = {
+  val: 123,
+  callMe: (a) => { return % a }
+}
+const result = someObject.callMe(2);
+`}
+</CodePane>
+
+---
+# Hoisting
+
+Virker:
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+doSomething(); 
+function doSomething() { return "yes" }
+`}
+</CodePane>
+
+Virker ikke:
+<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+{`
+doSomethingElse(); 
+const doSomethingElse = () => { return "yes" }
+`}
+</CodePane>
+
+---
