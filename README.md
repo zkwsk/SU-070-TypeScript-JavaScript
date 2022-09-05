@@ -1,44 +1,35 @@
-Spectacle Boilerplate
+SU-070 Typescript/Javascript
 =====================
 
-## Contents
+Materiale for [dette kursus](https://www.superusers.dk/kursus/su0070/).
 
-- [Reference](#reference)
-- [Getting Started](#getting-started)
-- [Tutorial](#tutorial)
-- [Build & Deployment](#build-deployment)
+## Slideshow
 
-## Reference
+Slideshow kan tilgås på:
 
-The Spectacle core API is available in the [Spectacle Docs](https://github.com/FormidableLabs/spectacle/blob/main/README.md).
+[https://zkwsk.github.io/SU-070-TypeScript-JavaScript](https://zkwsk.github.io/SU-070-TypeScript-JavaScript)
 
-## Getting Started
 
-1. Install dependencies
+## Noter
 
-    ```sh
-    $ yarn install
-    ```
+Noter i mindmap format findes i mappen /notes hhv. [PDF](/notes/notes.pdf) og [Xmind](notes.xmind) format.
 
-2. Start the webpack server. The server will run at the default `webpack-dev-server` address, [`localhost:8080`](http://localhost:8080).
+## Udvikling
 
-    ```sh
-    $ yarn start
+Slideshowet er en webapplikation, så man kan redigere og køre det lokalt:
 
-    # Or with a specific port!
-    $ yarn start --port=3000
-    ```
-
-## Tutorial
-
-If want you a step-by-step guide for getting started with Spectacle, a basic tutorial is available [here](https://github.com/FormidableLabs/spectacle/blob/main/docs/tutorial.md).
-
-## Build & Deployment
-
-Building the dist version of the project is as easy as running
-
-```sh
-$ yarn build
+```
+yarn start
 ```
 
-From there you can deploy the built slides  in `dist` to services like Netlify, Surge, etc!
+For at bygge projektet til mappen `/dist` kan man køre:
+
+```
+yarn build
+```
+
+For at bygge og deploye bygget til Github Pages kan man køre følgende:
+
+```
+yarn deploy
+```
