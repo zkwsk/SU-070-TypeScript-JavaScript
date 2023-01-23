@@ -35,9 +35,9 @@ const template = () => (
     <Box padding="0 1em">
       <FullScreen />
     </Box>
-    <Box padding="1em">
+    {/* <Box padding="1em">
       <Progress />
-    </Box>
+    </Box> */}
   </FlexBox>
 );
 // SPECTACLE_CLI_TEMPLATE_END

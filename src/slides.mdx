@@ -1,16 +1,23 @@
-import { CodePane } from 'spectacle';
+import { CodePane, Image, FlexBox, Slide, SlideLayout } from 'spectacle';
 import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 
 # Typescript/Javascript Programmering
 
 ---
-# Introduktion
+## Introduktion
 
  - Meet and greet
  - Forventningsafstemning
 
 ---
-# Bogmærker
+## Overblik
+
+  - Dag 1: Javascript/Ecmascript
+  - Dag 2: Typescript
+  - Dag 3: Projekt og opsamling på dag 1 og 2
+
+---
+## Bogmærker
 
 - Official documentation: [typescriptlang.org](https://www.typescriptlang.org/docs/)
 - Typescript Deep Dive: [basarat.gitbook.io/typescript](https://basarat.gitbook.io/typescript/)
@@ -20,7 +27,7 @@ import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 - [Can I Use](https://caniuse.com/)
 
 ---
-# Hvad er Javascript/Ecmascript?
+## Hvad er Javascript/Ecmascript?
 
 - Født i browseren
 - Dynamisk typed (run-time)
@@ -30,7 +37,7 @@ import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 - Bundet af browser kompatibilitet
 
 ---
-# Tidslinie
+## Tidslinie
 
 - 1997: Ecmascript
 - ES4 droppet
@@ -40,39 +47,78 @@ import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 - 2016-2022: Løbende årlige udgivelser: ES7, ES8, ES9, ES10, ES11, ES12, ES13
 
 ---
-# Hvad er Typescript?
-
-- Supersæt af Javascript
-- Strongly typed
-- Typescript compileres/transpileres til javascript
-- "Normaliseret" kode 
+## Hvad er Typescript?
 
 ---
-# Hvorfor Typescript?
+## Supersæt af Javascript
+<FlexBox>
+  <Image height="80%" src="../assets/js-today-typescript.png"/>
+</FlexBox>
+
+---
+## Strongly typed
+
+Dette er ok:
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+let x:number = 1;
+const multiplyByTwo = (x:number) => {
+  return x * 2;
+}
+`}
+</CodePane>
+
+Dette vil fejle:
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+let x:string = "1";
+const multiplyByTwo = (x:number) => {
+  return x * 2;
+}
+`}
+</CodePane>
+---
+
+## Compilation 1/2
+
+<SlideLayout.HorizontalImage src="../assets/typescript-lifecycle.png" />
+
+## Compilation 2/2
+
+- Typescript compileren oversætter Typescript til Javascript
+- Typescript type-tjekker når koden compiles
+- Bemærk: Typescript typer eksisterer ikke i runtime
+
+---
+## Hvorfor Typescript?
 
 - Tillid
 - Hurtige feedback loops 
   - Compile-time fejl
-  - Feedback i editor
-  - "Fail fast"
-- Behov for mindre valideringslogik og unit tests
+  - Feedback i editor > "Fail fast"
+- Behov for mindre valideringslogik og færre unit tests
 - Future javascript now
 
 ---
-# Værktøjskasse
+## Værktøjskasse
 
 - Installer NPM og Node.JS
 - Installer Yarn
 - Installer VSCode
 
 ---
-# NPM
+## NPM 1/2
 
-NPM er ansvarlig for pakkestyring (package manager) i Javascript. Vi vil bruge NPM til at installere og styre afhængigheder. Sørg for at have Node.js v.16.x (LTS) installeret.
+NPM er ansvarlig for pakkestyring (package manager) i Javascript. Vi bruger NPM til at installere og styre afhængigheder. Sørg for at have Node.js (minimum v.16.x) installeret.
 
 [Download Node.js](https://nodejs.org/en/download/)
 
-Du kan også anvende en Linux/Unix package manager til at installere Node.js. F.eks. [HomeBrew](https://brew.sh/) på Mac eller [APT](https://ubuntu.com/server/docs/package-management) på Linux.
+---
+## NPM 2/2
+
+På Linux/Unix/Mac kan du anvende en package manager til at installere Node.js:
+- Mac: [HomeBrew](https://brew.sh/)
+- Linux: [APT](https://ubuntu.com/server/docs/package-management)
 
 ---
 # Yarn
@@ -82,7 +128,7 @@ Du kan også anvende en Linux/Unix package manager til at installere Node.js. F.
 
 Installere Yarn globalt:
 
-<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
 {`
 $ npm install yarn --global
 `}
@@ -101,136 +147,270 @@ Derfor tager kurset udgangspunkt at bruge VSCode.
 [Download VSCode](https://code.visualstudio.com/download)
 
 ---
-# Typescript - hurtigt igang
-
-- [Typescript Playground](https://www.typescriptlang.org/play)
-- [Code Sandbox](https://codesandbox.io/)
+## Pause
 
 ---
-# Typescript lokalt projekt
+## Javascript syntaks
 
-For at starte at basis Typescript projekt lokalt, kan du køre:
+I den følgende sektion gennemgår vi grundlæggende Javascript syntaks. 
 
-<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+Da Typescript er et supersæt af Javascript er alt hvad vi lærer her også gyldig Typescript.
+
+---
+## Variable
+
+Du kan bruge forskellige keywords `var`, `let` og `const` til at definere en variabel.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-$ mkdir typescript-test-project && cd $_
-$ yarn add typescript --dev
-$ yarn tsc --init
-$ tsc [your-file.ts]
+var a = "Jens";
+console.log(a); // "Jens"
+let b = "Børge";
+console.log(b); // "Børge"
+const c = "Hansen";
+console.log(c); // "Hansen"
 `}
 </CodePane>
 
 ---
-# tsconfig.json (1/5)
+## Variable - re-assignment
 
-Du kan køre `tsc` med "flag" for eksempel:
+Hvis du anvender `var` eller `let` kan du ændre værdien af variablen senere i koden:
 
-<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-$ tsc app.ts util.ts --target esnext --outfile index.js
-`}
-</CodePane>
-
-Hvilket "bygger" filerne `app.ts` og `util.ts` og sætter dem sammen til en enkelt fil, `index.js`
-
----
-# tsconfig.json (2/5)
-
-Det er ikke praktisk at holde styr på alle compiler options med flag.
-
-<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
-{`
-$ tsc --init app.ts util.ts --target esnext --outfile index.js
-`}
-</CodePane>
-
-Med `--init` flaget kan du automatisk oprette en konfigurationsfil, tsconfig.json, hvor de flag du har sat bliver gemt.
-
----
-# tsconfig.json (3/5)
-
-Hvis du kører tsc uden options vil typescript compileren kigger efter en tsconfig.json fil og anvende de options der er angivet.
-
-Hvis du checker tsconfig.json ind i Git og sørger for at alle fremtidige ændringer opdateres i filen, er du sikker på at dine kolleger compiler med samme options som dig.
-
----
-# tsconfig.json (4/5)
-
-- `tsconfig.json` kan være intimiderende
-- Dokumentation: [typescriptlang.org/tsconfig](https://www.typescriptlang.org/tsconfig)
-- Vigtige options:
-  - files
-  - include
-  - exclude
-  - outDir / outFile
-
----
-# tsconfig.json (5/5)
-
-- Vigtige options (fortsat):
-  - target
-  - extends
-  - lib
-  - sourceMap
-  - watchMode
-  - allowJS / checkJS
-
----
-# Linting
-
-- Eslint
-- Tslint
-- Prettier
-
----
-# Poetic
-
-Poetic er en NPM pakke der gør det nemt at installere og konfigurere linters og prettier med forudbestemte basisindstillinger:
-
-https://www.npmjs.com/package/poetic
-
-<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
-{`
-$ npx poetic
+let a = "Jens";
+let b = "Hansen";
+b = "Jensen";
+console.log(a + " " + b); // "Jens Jensen"
 `}
 </CodePane>
 
 ---
-# TS Node
+## Variable - konstante værdier
 
-Med `ts-node` kan vi afvikle typescipt filer i et servermiljø eller vi kan starte en REPL for at eksperimentere og afprøve ting.
+Hvis du benytter `const` kan du ikke ændre værdien af variablen senere:
 
-Afvikle en fil:
-<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-$ npx ts-node file.ts
-`}
-</CodePane>
-
-Starte en REPL:
-<CodePane language="bash" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
-{`
-$ npx ts-node
+const a = "Jens";
+const b = "Hansen";
+b = "Jensen"; // Fejl
 `}
 </CodePane>
 
 ---
-# Javascript/Typescript syntaks
+## Variable - forskel på `var` og `let`
 
-I den følgende sektion gennemgår vi grundlæggende syntaks der gælder for både javascript i Typescript.
+`var` er function scoped. `let` er block scoped.
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+function run() {
+  var foo = "Foo";
+  let bar = "Bar";
+  console.log(foo, bar); // Foo Bar
+  {
+    var moo = "Mooo"
+    let baz = "Bazz";
+    console.log(moo, baz); // Mooo Bazz
+  }
+  console.log(moo); // Mooo
+  console.log(baz); // ReferenceError
+}
+run();
+`}
+</CodePane>
 
 ---
-# Equality
+## Varable uden keyword
+
+Hvis man deklarerer en variabel uden keyword bliver den automatisk tilføjet til global scope. Dette er en dårlig praksis og skal undgås, da du risikerer at overskrive andre variable i global scope - f.eks. fra et library du kunne have loaded.
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+// Gør aldrig dette
+a = "Jens"; // Implicit global
+// Skal du bruge en global variabel, så gør det eksplicit med window:
+window.a = "Jens"; // Explicit global
+`}
+</CodePane>
+
+---
+## Variable - best practice
+
+- Brug `const` så ofte som muligt. Det er mere forudsigeligt.
+- Brug `let` hvis du skal ændre værdien af variablen senere i koden.
+- Undgå at bruge `var` med mindre du skriver kode der skal understøtte ES5, da function scope er forvirrende for udviklere med baggrund i andre sprog og er skyld i mange bugs.
+- Brug aldrig variable deklareret uden keyword (implicit globals)
+
+---
+## Dynamiske typer
+
+Javascript er et dynamisk sprog, hvilket betyder at du ikke behøver at definere datatypen af en variabel. 
+
+Datatypen bliver automatisk bestemt af værdien:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+"Jens" // string
+42 // number
+true // boolean
+`}
+</CodePane>
+
+---
+## Primitive datatyper i Javascript
+
+Javascript har 7 primitive datatyper:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+"Jens" // string
+42 // number
+true // boolean
+null // null
+undefined // undefined
+Symbol("foo") // symbol
+BigInt(9007199254740991) // bigint
+`}
+</CodePane>
+
+---
+## Strenge (strings)
+En `string` er en tekststreng. Og kan defineres med enkelt eller dobbelt anførselstegn.
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+"Jens"
+'Peter'
+'Streng der indeholder "dobbelte" anførselstegn';
+"Streng der indeholder 'enkelte' anførselsetegn.";
+`}
+</CodePane>
+
+---
+## Sammensatte strenge
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+const samlet = "Jens" + " " + "Peter"; // "Jens Peter"
+const matematik = "1" + "2"; // "12"
+`}
+</CodePane>
+---
+## Template literals
+- Anvender backticks ` i stedet for anførselstegn.
+- Særlig syntaks til at indsætte variabler i strengen.
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+const firstName = "Jens";
+const lastName = "Hansen";
+const samlet = \`\${firstName} \${lastName}\`; // "Jens Hansen"
+const samlet2 = \`Mit navn er \${firstName} \${lastName} og jeg bor i Odder.\`; // "Mit navn er Jens Hansen og jeg bor i Odder."
+`}
+</CodePane>
+
+---
+## Øvelse 1
+
+Strenge assignment og template literals:
+
+[![Edit variables-assignment-strings](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/variables-assignment-strings-wl3pqf?fontsize=14&hidenavigation=1&theme=dark)
+
+---
+## Tal i javascript (numbers)
+
+- Modsat andre programmeringssprog anvendes typen `number` til både heltal og decimaltal.
+- BigInt kan anvendes til at repræsentere heltal større end 2^53 - 1.
+
+---
+## Aritmetik
+
+| Operator | Beskrivelse    |
+| -------- | ---------------|
+| +        | Addition       |
+| \-       | Subtraction    |
+| \*       | Multiplication |
+| \*\*     | Exponentiation |
+| /        | Division       |
+| %        | Modulus (rest) |
+| ++       | Increment      |
+| \--      | Decrement      |
+
+---
+## Aritmetik (eksempler)
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+1 + 2 // 3 // Addition
+7 - 2 // 5 // Subtraction
+2 * 2 // 4 // Multiplication
+2 ** 3 // 8 // Exponentiation
+2 / 2 // 1 // Division
+3 % 2 // 1 // Modulus (rest)
+let a = 1; a++; // 2 // Increment
+let b = 10; b--; // 9 // Decrement
+`}
+</CodePane>
+
+---
+## Konvertere strenge til tal 1/3
+
+Hvis man på forhånd ved en streng indeholder et tal kan man konvertere den til et tal med `Number()`, `parseInt()` eller `parseFloat()`.
+
+`parseInt()` returnerer det først heltal den finder i strengen:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+parseInt("32px") // 32
+`}
+</CodePane>
+
+---
+## Konvertere strenge til tal 2/3
+
+`parseFloat()` returnerer det først decimaltal den finder i strengen:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+parseFloat("32.2px") // 32.2
+`}
+</CodePane>
+
+---
+## Konvertere strenge til tal 3/3
+
+`Number()` forsøger at konvertere hele strengen til et tal:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+Number("32") // 32
+Number("32.2") // 32.2
+Number("32px") // NaN
+`}
+</CodePane>
+
+---
+## Øvelse 2
+
+Artimetik og matematiske operatorer:
+
+[![Edit variables-numbers-arithmetic](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/hungry-carlos-on3e7b?fontsize=14&hidenavigation=1&theme=dark)
+
+---
+## Equality
 
 - Loosely equal: `==`
+  - Javascript konverterer værdierne til samme type før sammenligning.
 - Strictly equal: `===`
+  - Javascript sammenligner værdierne uden konvertering.
 
 [MDN: Equality comparisons and sameness](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness)
 
 ---
-# Kontrolstrukturer - if
+## Kontrolstrukturer - if
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 if (userInput % 2) {
   /* Hvis user input er ulige */
@@ -240,8 +420,8 @@ if (userInput % 2) {
 </CodePane>
 
 ---
-# Kontrolstrukturer - if/else
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+## Kontrolstrukturer - if/else
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 if (userInput % 2) {
   /* Hvis user input er ulige */
@@ -253,35 +433,35 @@ if (userInput % 2) {
 `}
 </CodePane>
 ---
-# Ternary operator
+## Ternary operator
 
 Samme princip som `if/else` men på en linie:
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 return userInput % 2 ? 'a' : 'b';
 `}
 </CodePane>
 ---
-# AND/OR
+## AND/OR
 
 AND:
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 return a && b;
 `}
 </CodePane>
 
 OR:
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 return a || b;
 `}
 </CodePane>
 
 ---
-# Nullish coalescing operator
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+## Nullish coalescing operator
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 let accountAmount = 0;
 return accountAmount || 'No account found'; // 'No account found'
@@ -294,11 +474,11 @@ return accountAmount ?? 'No account found'; // 0
 [Video by Web Dev Simplified](https://youtu.be/v2tJ3nzXh8I?t=41)
 
 ---
-# Guard clauses (1/2)
+## Guard clauses (1/2)
 
 Without guard clause:
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 function processRequest(paramA, paramB) {
   if (typeof paramA !== 'undefined' || typeof paramB !== 'undefined' ) {
@@ -312,11 +492,11 @@ function processRequest(paramA, paramB) {
 </CodePane>
 
 ---
-# Guard clauses (2/2)
+## Guard clauses (2/2)
 
 With guard clause:
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 function processRequest(paramA, paramB) {
   if (typeof paramA === 'undefined' || typeof paramB === 'undefined' ) {
@@ -328,26 +508,164 @@ function processRequest(paramA, paramB) {
 </CodePane>
 
 [Video by Web Dev Simplified](https://www.youtube.com/watch?v=EumXak7TyQ0)
----
-# Objekter
 
-- Objekter
-- Indlejrede objekter (nesting)
-- json
- 
 ---
-# Funktioner (1/3)
+## Objekter
+
+Et javascript objekt er en entitet der definerer egenskaber (properties) og data.
+
+Eksempel:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+let person = {
+  name: "John Doe",
+  age: 30,
+  occupation: "Software Developer",
+};
+`}
+</CodePane>
+
+---
+## Indlejrede objekter
+
+Et javascript objekt kan indeholde indlejrede objekter:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+let person = {
+  name: "John Doe",
+  age: 30,
+  occupation: "Software Developer",
+  address: {
+    street: "123 Main St",
+    city: "Anytown",
+    state: "CA",
+    zip: "12345"
+  },
+};
+`}
+</CodePane>
+
+---
+## Tilgå objekt værdier
+
+Man kan tilgå objekt værdier på to måder:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+  // Dot notation
+  const name = person.name;
+  // Bracket notation
+  const name = person["name"];
+  // Nestede værdier
+  const street = person.address.street;
+`}
+</CodePane>
+
+---
+## Object destructuring
+
+Man kan anvende object destructuring som en genvej til at oprette en ny variabel og tildele den en værdi fra et objekt på samme tid. Man "plukker" værdien ud af objektet:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+  const { name } = person;
+  console.log(name); // "John Doe"
+  // Eller flere værdier på samme tid:
+  const { name, age, occupation } = person;
+  console.log(name, age, occupation); // "John Doe", 30, "Software Developer"
+`}
+</CodePane>
+
+---
+## Arrays
+
+Et javascript array er en liste af værdier.
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+  const list = [1, 2, 3, 4, 5];
+`}
+</CodePane>
+
+I javascript kan et array indeholde værdier af forskellige typer:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+  const list = [1, "to", { id: 3} , 4, "5"];
+`}
+</CodePane>
+
+---
+## Array destructuring
+
+Ligesom objekter kan man anvende destructuring med arrays:
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+  const list = [1, 2, 3 , 4, 5];
+  const [first, third] = list;
+  console.log(first, third); // 1, 3
+`}
+</CodePane>
+
+---
+## JSON
+
+JSON er et dataformat baseret på javascript objekter. JSON data gemmes i en .json. Bemærk at at alle værdier i JSON skal være i dobbelte anførselstegn:
+
+<CodePane language="json" theme={tomorrow} showLineNumbers={false}>
+{`
+{
+  "name": "John Doe",
+  "age": "30",
+  "occupation": "Software Developer",
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "state": "CA",
+    "zip": "12345"
+  }
+}
+`}
+</CodePane>
+
+---
+## JSON Parse
+
+En json fil kan importeres i en javascript fil og konverteres til et object med JSON.parse();
+
+<CodePane language="json" theme={tomorrow} showLineNumbers={false}>
+{`import person from './person.json';
+const obj = JSON.parse(person);`}
+</CodePane>
+
+Ligeledes kan man serialisere et objekt til JSON med JSON.stringify():
+
+<CodePane language="json" theme={tomorrow} showLineNumbers={false}>
+{`
+const obj = { name: "John Doe", age: 30 };
+const jsontext = JSON.stringify(obj);
+`}
+</CodePane>
+
+---
+## Øvelse 3
+
+---
+## Funktioner (1/3)
 
 - Navn
 - Parametre/argumenter
 - Returværdi
 
 ---
-# Funktioner (2/3)
+## Funktioner (2/3)
 
 "function" syntaks:
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 function sum(a, b) { return a + b }
 `}
@@ -355,7 +673,7 @@ function sum(a, b) { return a + b }
 
 Anonym funktion:
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 (a, b) {return a + b }
 `}
@@ -363,18 +681,18 @@ Anonym funktion:
 
 "Arrow" syntaks:
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 const sum = (a, b) => { return a + b }
 `}
 </CodePane>
 
 ---
-# Funktioner (3/3)
+## Funktioner (3/3)
 
 Det kaldes en metode når en objekt- eller klasse property har en funktion som værdi:
 
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 const someObject = {
   val: 123,
@@ -385,10 +703,10 @@ const result = someObject.callMe(2);
 </CodePane>
 
 ---
-# Hoisting
+## Hoisting
 
 Virker:
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 doSomething(); 
 function doSomething() { return "yes" }
@@ -396,10 +714,133 @@ function doSomething() { return "yes" }
 </CodePane>
 
 Virker ikke:
-<CodePane language="typescript" theme={tomorrow} highlightRanges={[1, 3]} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 doSomethingElse(); 
 const doSomethingElse = () => { return "yes" }
+`}
+</CodePane>
+
+---
+## Array Funktioner
+
+---
+## Rest og spread
+
+---
+## Optional chaining
+
+---
+## Typescript - hurtigt igang
+
+- [Typescript Playground](https://www.typescriptlang.org/play)
+- [Code Sandbox](https://codesandbox.io/)
+
+---
+## Typescript lokalt projekt
+
+For at starte at basis Typescript projekt lokalt, kan du køre:
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ mkdir typescript-test-project && cd $_
+$ yarn add typescript --dev
+$ yarn tsc --init
+$ tsc [your-file.ts]
+`}
+</CodePane>
+
+---
+## tsconfig.json (1/5)
+
+Du kan køre `tsc` med "flag" for eksempel:
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ tsc app.ts util.ts --target esnext --outfile index.js
+`}
+</CodePane>
+
+Hvilket "bygger" filerne `app.ts` og `util.ts` og sætter dem sammen til en enkelt fil, `index.js`
+
+---
+## tsconfig.json (2/5)
+
+Det er ikke praktisk at holde styr på alle compiler options med flag.
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ tsc --init app.ts util.ts --target esnext --outfile index.js
+`}
+</CodePane>
+
+Med `--init` flaget kan du automatisk oprette en konfigurationsfil, tsconfig.json, hvor de flag du har sat bliver gemt.
+
+---
+## tsconfig.json (3/5)
+
+Hvis du kører tsc uden options vil typescript compileren kigger efter en tsconfig.json fil og anvende de options der er angivet.
+
+Hvis du checker tsconfig.json ind i Git og sørger for at alle fremtidige ændringer opdateres i filen, er du sikker på at dine kolleger compiler med samme options som dig.
+
+---
+## tsconfig.json (4/5)
+
+- `tsconfig.json` kan være intimiderende
+- Dokumentation: [typescriptlang.org/tsconfig](https://www.typescriptlang.org/tsconfig)
+- Vigtige options:
+  - files
+  - include
+  - exclude
+  - outDir / outFile
+
+---
+## tsconfig.json (5/5)
+
+- Vigtige options (fortsat):
+  - target
+  - extends
+  - lib
+  - sourceMap
+  - watchMode
+  - allowJS / checkJS
+
+---
+## Linting
+
+- Eslint
+- Tslint
+- Prettier
+
+---
+## Poetic
+
+Poetic er en NPM pakke der gør det nemt at installere og konfigurere linters og prettier med forudbestemte basisindstillinger:
+
+https://www.npmjs.com/package/poetic
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ npx poetic
+`}
+</CodePane>
+
+---
+## TS Node
+
+Med `ts-node` kan vi afvikle typescipt filer i et servermiljø eller vi kan starte en REPL for at eksperimentere og afprøve ting.
+
+Afvikle en fil:
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ npx ts-node file.ts
+`}
+</CodePane>
+
+Starte en REPL:
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ npx ts-node
 `}
 </CodePane>
 
