@@ -7,6 +7,7 @@ import {
   Deck,
   FlexBox,
   Slide,
+  SlideLayout,
   Box,
   Progress,
   FullScreen,
@@ -48,12 +49,12 @@ const Presentation = () => (
       {slides
         .map((MDXSlide, i) => [MDXSlide, notes[i]])
         .map(([MDXSlide, MDXNote], i) => (
-          <Slide key={`slide-${i}`} slideNum={i}>
+          <SlideLayout.Full key={`slide-${i}`} slideNum={i}>
             <MDXSlide />
             <Notes>
               <MDXNote />
             </Notes>
-          </Slide>
+          </SlideLayout.Full>
         ))}
     </Deck>
   </MDXProvider>

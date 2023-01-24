@@ -1,4 +1,4 @@
-import { CodePane, Image, FlexBox, Slide, SlideLayout } from 'spectacle';
+import { CodePane, Image, FlexBox, Slide, SlideLayout, Heading } from 'spectacle';
 import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 
 # Typescript/Javascript Programmering
@@ -49,6 +49,9 @@ import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 ---
 ## Hvad er Typescript?
 
+- Supersæt af Javascript
+- Statically typed (compile-time)
+
 ---
 ## Supersæt af Javascript
 <FlexBox>
@@ -56,7 +59,7 @@ import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 </FlexBox>
 
 ---
-## Strongly typed
+## Statically typed
 
 Dette er ok:
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
@@ -78,24 +81,30 @@ const multiplyByTwo = (x:number) => {
 `}
 </CodePane>
 ---
-
 ## Compilation 1/2
+<FlexBox>
+  <Image width="70%" src="../assets/typescript-lifecycle.png"/>
+</FlexBox>
 
-<SlideLayout.HorizontalImage src="../assets/typescript-lifecycle.png" />
-
+---
 ## Compilation 2/2
 
-- Typescript compileren oversætter Typescript til Javascript
-- Typescript type-tjekker når koden compiles
-- Bemærk: Typescript typer eksisterer ikke i runtime
+- Design time
+  - Redigerer projektet i VSCode
+- Compile time
+  - Projektet konverteres til Javascript
+- Run time
+  - Projektet kører som Javascript i browser eller Node.js
+  - Bemærk: Typescript typer eksisterer ikke i runtime
 
 ---
 ## Hvorfor Typescript?
 
 - Tillid
 - Hurtige feedback loops 
-  - Compile-time fejl
-  - Feedback i editor > "Fail fast"
+  - Design time fejl
+    - Feedback i editor > "Fail fast"
+  - Compile time fejl
 - Behov for mindre valideringslogik og færre unit tests
 - Future javascript now
 
@@ -311,11 +320,14 @@ const samlet2 = \`Mit navn er \${firstName} \${lastName} og jeg bor i Odder.\`; 
 </CodePane>
 
 ---
-## Øvelse 1
+## Øvelse
 
 Strenge assignment og template literals:
 
 [![Edit variables-assignment-strings](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/variables-assignment-strings-wl3pqf?fontsize=14&hidenavigation=1&theme=dark)
+
+---
+## Pause
 
 ---
 ## Tal i javascript (numbers)
@@ -327,7 +339,7 @@ Strenge assignment og template literals:
 ## Aritmetik
 
 | Operator | Beskrivelse    |
-| -------- | ---------------|
+|----------|----------------|
 | +        | Addition       |
 | \-       | Subtraction    |
 | \*       | Multiplication |
@@ -391,7 +403,7 @@ Number("32px") // NaN
 </CodePane>
 
 ---
-## Øvelse 2
+## Øvelse
 
 Artimetik og matematiske operatorer:
 
@@ -474,40 +486,63 @@ return accountAmount ?? 'No account found'; // 0
 [Video by Web Dev Simplified](https://youtu.be/v2tJ3nzXh8I?t=41)
 
 ---
-## Guard clauses (1/2)
+## Pause
 
-Without guard clause:
+---
+## Iteration - loops
+
+- Loops (iterators) anvendes når man vil gentage en stump kode flere gange.
+- Der findes 3 forskellige typer loops i javascript:
+  - `for`
+  - `while`
+  - `do while`
+
+---
+## For loop
 
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-function processRequest(paramA, paramB) {
-  if (typeof paramA !== 'undefined' || typeof paramB !== 'undefined' ) {
-    const result = paramA + paramB;
-    return result;
-  } else {
-    return null;
-  }
+for (let i = 0; i < 10; i++) {
+  console.log(i); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 }
 `}
 </CodePane>
 
 ---
-## Guard clauses (2/2)
-
-With guard clause:
+## While loop
 
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-function processRequest(paramA, paramB) {
-  if (typeof paramA === 'undefined' || typeof paramB === 'undefined' ) {
-    return null;
-  }
-  return paramA + paramB;
+let i = 0;
+while (i < 10) {
+  console.log(i); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+  i++;
 }
 `}
 </CodePane>
 
-[Video by Web Dev Simplified](https://www.youtube.com/watch?v=EumXak7TyQ0)
+---
+## do...while loop
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+let i = 0;
+do {
+  console.log(i); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+  i++;
+} while (i < 10);
+`}
+</CodePane>
+
+---
+## Øvelse
+
+Iterators
+
+[![Edit trusting-http-qhrnek](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/trusting-http-qhrnek?fontsize=14&hidenavigation=1&theme=dark)
+
+---
+## Pause
 
 ---
 ## Objekter
@@ -613,7 +648,14 @@ Ligesom objekter kan man anvende destructuring med arrays:
 ---
 ## JSON
 
-JSON er et dataformat baseret på javascript objekter. JSON data gemmes i en .json. Bemærk at at alle værdier i JSON skal være i dobbelte anførselstegn:
+- JSON står for JavaScript Object Notation
+- Gemmes i en .json fil
+- Bruges ofte til at gemme data til en fil eller til at udveksle data med et API
+
+---
+## JSON
+
+JSON ligner et javascript objekt, men bemærk at at alle værdier i JSON skal være i dobbelte anførselstegn:
 
 <CodePane language="json" theme={tomorrow} showLineNumbers={false}>
 {`
@@ -651,19 +693,26 @@ const jsontext = JSON.stringify(obj);
 </CodePane>
 
 ---
-## Øvelse 3
+## Øvelse
+
+Objekter og Arrays:
+
+[![Edit objects-and-arrays](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/amazing-platform-zqfbng?fontsize=14&hidenavigation=1&theme=dark)
 
 ---
-## Funktioner (1/3)
-
-- Navn
-- Parametre/argumenter
-- Returværdi
+## Pause
 
 ---
-## Funktioner (2/3)
+## Funktioner
 
-"function" syntaks:
+- Funktioner er en af de vigtigste byggesten i javascript.
+- En funktion er en sekvens af instruktioner der er pakket som en enhed og kan genbruges.
+- En funktion er en blok kode der udfører et stykke arbejde når den bliver kaldt.
+- En funktion kan tage parametre og returnere en værdi.
+- En funktion kan også modificere værdier udenfor sit eget scope (side effects)
+
+---
+## Funktioner (syntaks)
 
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
@@ -671,21 +720,78 @@ function sum(a, b) { return a + b }
 `}
 </CodePane>
 
+---
+## Anatomien af en funktion 1/2
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function sum(a, b) { return a + b }
+`}
+</CodePane>
+
+- Navn: sum
+- Parametre: a, b
+- Returværdi: a + b
+
+---
+## Anatomien af en funktion 2/2
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function capitalize(input) {
+  const output = input.toUpperCase();
+  return output;
+}
+`}
+</CodePane>
+
+- Navn: capitalize
+- Parametre: input
+- Returværdi: output
+
+---
+## Anonyme funktioner
 Anonym funktion:
 
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-(a, b) {return a + b }
+function(a, b) {return a + b }
 `}
 </CodePane>
 
-"Arrow" syntaks:
+Anonym funktion med variabel:
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const sum = function(a, b) {return a + b }
+sum(1, 2); // 3
+`}
+</CodePane>
+
+---
+## Arrow funktion
 
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-const sum = (a, b) => { return a + b }
+const capitalize = (input) => { return input.toUpperCase() }
 `}
 </CodePane>
+
+Hvis der kun er en parameter kan paranteser undlades:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const capitalize = input => { return input.toUpperCase() }
+`}
+</CodePane>
+
+Hvis funktionen returnerer på en linie kan blok og return statement undlades:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const capitalize = input => input.toUpperCase();
+`}
+</CodePane>
+
 
 ---
 ## Funktioner (3/3)
@@ -722,126 +828,204 @@ const doSomethingElse = () => { return "yes" }
 </CodePane>
 
 ---
-## Array Funktioner
+## Funktioner som returnerer funktioner
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function calculator(operation) {
+  if (operation === 'add') {
+    return function(a, b) { return a + b; }
+  } else if (operation === 'subtract') {
+    return function (a, b) { return a - b };
+  }
+}
+calculator('add)(1, 2); // 3
+`}
+</CodePane>
 
 ---
-## Rest og spread
+## Funktion som tager en funktion som parameter
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function processWithCallback(x, y, callback) {
+  const result = x * y;
+  callback(result);
+  return result;
+}
+process(3, 7, (a) => { console.log(a)})
+process(5, 2, (a) => { persistToDatabase(a)})
+`}
+</CodePane>
+---
+## Øvelse
+
+Funktioner, objekter og arrays
+
+[![Edit functions-with-objects-and-arrays](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/functions-with-objects-and-arrays-2vl0mi?fontsize=14&hidenavigation=1&theme=dark)
+
+---
+## Pause
+
+---
+## Guard clauses (1/2)
+
+Without guard clause:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function processRequest(paramA, paramB) {
+  if (typeof paramA !== 'undefined' || typeof paramB !== 'undefined' ) {
+    const result = paramA + paramB;
+    return result;
+  } else {
+    return null;
+  }
+}
+`}
+</CodePane>
+
+---
+## Guard clauses (2/2)
+
+With guard clause:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function processRequest(paramA, paramB) {
+  if (typeof paramA === 'undefined' || typeof paramB === 'undefined' ) {
+    return null;
+  }
+  return paramA + paramB;
+}
+`}
+</CodePane>
+
+[Video by Web Dev Simplified](https://www.youtube.com/watch?v=EumXak7TyQ0)
+
+---
+## Array Funktioner `Array.forEach()`
+
+For each afvikler en stump kode for hvert element i et array. Der returneres ikke noget fra forEach.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const list = [1, 2, 3, 4, 5];
+list.forEach((item) => { console.log(item) }); // 1, 2, 3, 4, 5
+`}
+</CodePane>
+
+
+---
+## Array Funktioner `Array.map()`
+
+Map ligner forEach, men afviger ved at returnere et nyt array med de ændrede værdier.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const list = [1, 2, 3, 4, 5];
+const newList = list.map((item) => { return item - 1 }); // 0, 1, 2, 3, 4
+`}
+</CodePane>
+
+---
+## Array Funktioner `Array.find()`
+
+Find returnerer det første element i et array, der matcher et givent kriterie.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const list = [
+  { id:1, name: 'first'},
+  { id:2, name: 'second' }
+];
+const picked = list.find((item) => { item.id === 2 });
+console.log(picked); // { id:2, name: 'second' }
+`}
+</CodePane>
+
+---
+## Array Funktioner `Array.filter()`
+
+Filter returnerer et nyt array med alle elementer, der matcher et givent kriterie.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const list = [
+  { id:1, name: 'first'},
+  { id:2, name: 'second' },
+  { id: 3, name: 'third' },
+  { id: 4, name: 'fourth' },
+  { id: 5, name: 'fifth' }
+];
+const picked = list.filter((item) => { item.id > 3 });
+console.log(picked); // [{ id: 4, name: 'fourth' }, { id: 5, name: 'fifth' }]
+`}
+</CodePane>
+
+---
+## Øvelse
+
+Array funktioner
+
+[![Edit array-methods](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/array-methods-dztykn?fontsize=14&hidenavigation=1&theme=dark)
 
 ---
 ## Optional chaining
 
----
-## Typescript - hurtigt igang
+Optional chaining giver mulighed for at undgå at få en fejl, hvis et objekt eller et array er undefined. Eksempel:
 
-- [Typescript Playground](https://www.typescriptlang.org/play)
-- [Code Sandbox](https://codesandbox.io/)
-
----
-## Typescript lokalt projekt
-
-For at starte at basis Typescript projekt lokalt, kan du køre:
-
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-$ mkdir typescript-test-project && cd $_
-$ yarn add typescript --dev
-$ yarn tsc --init
-$ tsc [your-file.ts]
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah'
+  }
+};
+const dogName = adventurer.dog?.name;
+console.log(dogName);
+// Expected output: undefined
+console.log(adventurer.someNonExistentMethod?.());
+// Expected output: undefined
 `}
 </CodePane>
 
 ---
-## tsconfig.json (1/5)
+## Rest parameters
 
-Du kan køre `tsc` med "flag" for eksempel:
+Giver adgang til at tage et ukendt antal parametre som et array.
 
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-$ tsc app.ts util.ts --target esnext --outfile index.js
-`}
-</CodePane>
-
-Hvilket "bygger" filerne `app.ts` og `util.ts` og sætter dem sammen til en enkelt fil, `index.js`
-
----
-## tsconfig.json (2/5)
-
-Det er ikke praktisk at holde styr på alle compiler options med flag.
-
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ tsc --init app.ts util.ts --target esnext --outfile index.js
-`}
-</CodePane>
-
-Med `--init` flaget kan du automatisk oprette en konfigurationsfil, tsconfig.json, hvor de flag du har sat bliver gemt.
-
----
-## tsconfig.json (3/5)
-
-Hvis du kører tsc uden options vil typescript compileren kigger efter en tsconfig.json fil og anvende de options der er angivet.
-
-Hvis du checker tsconfig.json ind i Git og sørger for at alle fremtidige ændringer opdateres i filen, er du sikker på at dine kolleger compiler med samme options som dig.
-
----
-## tsconfig.json (4/5)
-
-- `tsconfig.json` kan være intimiderende
-- Dokumentation: [typescriptlang.org/tsconfig](https://www.typescriptlang.org/tsconfig)
-- Vigtige options:
-  - files
-  - include
-  - exclude
-  - outDir / outFile
-
----
-## tsconfig.json (5/5)
-
-- Vigtige options (fortsat):
-  - target
-  - extends
-  - lib
-  - sourceMap
-  - watchMode
-  - allowJS / checkJS
-
----
-## Linting
-
-- Eslint
-- Tslint
-- Prettier
-
----
-## Poetic
-
-Poetic er en NPM pakke der gør det nemt at installere og konfigurere linters og prettier med forudbestemte basisindstillinger:
-
-https://www.npmjs.com/package/poetic
-
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ npx poetic
+function sum(...theArgs) {
+  let total = 0;
+  for (const arg of theArgs) {
+    total += arg;
+  }
+  return total;
+}
+console.log(sum(1, 2, 3));
+// Expected output: 6
+console.log(sum(1, 2, 3, 4));
+// Expected output: 10
 `}
 </CodePane>
 
 ---
-## TS Node
+## Spread syntax
 
-Med `ts-node` kan vi afvikle typescipt filer i et servermiljø eller vi kan starte en REPL for at eksperimentere og afprøve ting.
+"Udvide" et array eller et objekt til en liste af argumenter.
 
-Afvikle en fil:
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-$ npx ts-node file.ts
+function sum(x, y, z) {
+  return x + y + z;
+}
+const numbers = [1, 2, 3];
+console.log(sum(...numbers));
+// Expected output: 6
+console.log(sum.apply(null, numbers));
+// Expected output: 6
 `}
 </CodePane>
-
-Starte en REPL:
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ npx ts-node
-`}
-</CodePane>
-
----
