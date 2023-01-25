@@ -22,7 +22,12 @@ import slides, { notes } from './slides.mdx';
 
 
 // SPECTACLE_CLI_THEME_START
-const theme = {};
+const theme = {  
+  colors: {
+    primary: 'hsl(349, 10%, 35%)',
+    secondary: 'hsl(349, 80%, 49%)',
+  }
+};
 // SPECTACLE_CLI_THEME_END
 
 // SPECTACLE_CLI_TEMPLATE_START
@@ -32,9 +37,10 @@ const template = () => (
     position="absolute"
     bottom={0}
     width={1}
+    
   >
-    <Box padding="0 1em">
-      <FullScreen />
+    <Box padding="0 1em" >
+      <FullScreen/>
     </Box>
     {/* <Box padding="1em">
       <Progress />
@@ -49,7 +55,7 @@ const Presentation = () => (
       {slides
         .map((MDXSlide, i) => [MDXSlide, notes[i]])
         .map(([MDXSlide, MDXNote], i) => (
-          <SlideLayout.Full key={`slide-${i}`} slideNum={i}>
+          <SlideLayout.Full key={`slide-${i}`} slideNum={i} backgroundColor='hsl(349, 50%, 98%)'>
             <MDXSlide />
             <Notes>
               <MDXNote />
