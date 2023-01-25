@@ -971,7 +971,7 @@ Map ligner forEach, men afviger ved at returnere et nyt array med de ændrede v�
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 const list = [1, 2, 3, 4, 5];
-const newList = list.map((item) => { return item - 1 }); // 0, 1, 2, 3, 4
+const newList = list.map((item) => { return item - 1 }); // [0, 1, 2, 3, 4]
 `}
 </CodePane>
 
@@ -986,7 +986,7 @@ const list = [
   { id:1, name: 'first'},
   { id:2, name: 'second' }
 ];
-const picked = list.find((item) => { item.id === 2 });
+const picked = list.find((item) => { return item.id === 2 });
 console.log(picked); // { id:2, name: 'second' }
 `}
 </CodePane>
@@ -1018,9 +1018,9 @@ Reduce reducerer et array til en enkelt værdi.
 <CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 const dates = [
-  new Date('2022-01-01'),
   new Date('2020-03-04'),
   new Date('2018-04-03'),
+  new Date('2022-01-01'),
   new Date('2020-05-06'),
   new Date('2021-02-01')
 ];
@@ -1037,47 +1037,6 @@ Array funktioner
 
 [![Edit array-methods](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/array-methods-dztykn?fontsize=14&hidenavigation=1&theme=light)
 
----
-## Optional chaining
-
-Optional chaining giver mulighed for at undgå at få en fejl, hvis et objekt eller et array er undefined. Eksempel:
-
-<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
-{`
-const adventurer = {
-  name: 'Alice',
-  cat: {
-    name: 'Dinah'
-  }
-};
-const dogName = adventurer.dog?.name;
-console.log(dogName);
-// Expected output: undefined
-console.log(adventurer.someNonExistentMethod?.());
-// Expected output: undefined
-`}
-</CodePane>
-
----
-## Rest parameters
-
-Giver adgang til at tage et ukendt antal parametre som et array.
-
-<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
-{`
-function sum(...theArgs) {
-  let total = 0;
-  for (const arg of theArgs) {
-    total += arg;
-  }
-  return total;
-}
-console.log(sum(1, 2, 3));
-// Expected output: 6
-console.log(sum(1, 2, 3, 4));
-// Expected output: 10
-`}
-</CodePane>
 
 ---
 ## Classes
@@ -1517,3 +1476,73 @@ type MyGenericType = <T>(arg: T) => T;
 Typescript Generics
 
 [![Edit typescript-generics](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/typescript-generics-4geyu6?fontsize=14&hidenavigation=1&theme=light)
+
+---
+## Runtime validering
+
+Library:
+
+[Jack Herrington](https://www.youtube.com/watch?v=rY_XqfSHock)
+[Zod](https://github.com/colinhacks/zod)
+
+---
+## Array metoder og objekter
+
+Man kan ikke bruge Array metoder på objekter, men man kan konvertere Arrays til Objekt med `Object.entries`.
+
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+{`
+const timesheetByName = {
+  michael: { hours: "237"},
+  john: { hours: "252"},
+  jane: { hours: "212"},
+  michelle: { hours: "141"}
+};
+const timesheetEntries = Object.entries(timesheetByName);
+const totalHours = timesheetEntries.reduce((sum, [key, value]) => {
+  return sum + Number(value.hours);
+}, 0);
+`}
+</CodePane>
+
+---
+## Optional chaining
+
+Optional chaining giver mulighed for at undgå at få en fejl, hvis et objekt eller et array er undefined. Eksempel:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah'
+  }
+};
+const dogName = adventurer.dog?.name;
+console.log(dogName);
+// Expected output: undefined
+console.log(adventurer.someNonExistentMethod?.());
+// Expected output: undefined
+`}
+</CodePane>
+
+---
+## Rest parameters
+
+Giver adgang til at tage et ukendt antal parametre som et array.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function sum(...theArgs) {
+  let total = 0;
+  for (const arg of theArgs) {
+    total += arg;
+  }
+  return total;
+}
+console.log(sum(1, 2, 3));
+// Expected output: 6
+console.log(sum(1, 2, 3, 4));
+// Expected output: 10
+`}
+</CodePane>
