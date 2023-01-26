@@ -186,7 +186,7 @@ console.log(c); // "Hansen"
 
 Hvis du anvender `var` eller `let` kan du ændre værdien af variablen senere i koden:
 
-<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
 {`
 let a = "Jens";
 let b = "Hansen";
@@ -200,7 +200,7 @@ console.log(a + " " + b); // "Jens Jensen"
 
 Hvis du benytter `const` kan du ikke ændre værdien af variablen senere:
 
-<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
 {`
 const a = "Jens";
 const b = "Hansen";
@@ -809,6 +809,19 @@ const result = someObject.callMe(2);
 </CodePane>
 
 ---
+## Funktioner - Default argumenter
+
+Man kan definere default værdier for parametre:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const sum = (a = 1, b = 2) => a + b;
+sum(7,3) // 10
+sum() // 3
+`}
+</CodePane>
+
+---
 ## Hoisting
 
 Virker:
@@ -1172,7 +1185,7 @@ Klasser og nedarvning
 
 [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 const name:string = "Jens" // string
 const age:number = 42 // number
@@ -1183,7 +1196,7 @@ const married:boolean = true // boolean
 ---
 ## Arrays
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 // Array der kun indeholder tal
 const numbers:number[] = [1, 2, 3];
@@ -1195,12 +1208,26 @@ const mixed:(number|string)[] = [1, "Jens", 2, "Peter", 3, "Hans"];
 </CodePane>
 
 ---
+## Tuple
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+// Declare a tuple type
+let x: [string, number];
+// Initialize it
+x = ["hello", 10]; // OK
+// Initialize it incorrectly
+x = [10, "hello"]; // Error
+`}
+</CodePane>
+
+---
 ## Any
 
 - Any er en type der kan indeholde alle typer.
 - Man bør undgå at bruge any, da det fjerner mange af fordelene ved at bruge Typescript.
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 let obj: any = { x: 0 };
 // None of the following lines of code will throw compiler errors.
@@ -1217,7 +1244,7 @@ const n: number = obj;
 ---
 ## Functions
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 // Parameter type annotation
 function greet(name: string) {
@@ -1233,7 +1260,7 @@ function getFavoriteNumber(): number {
 ---
 ## Object typer
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 // The parameter's type annotation is an object type
 function printCoord(pt: { x: number; y: number }) {
@@ -1245,24 +1272,19 @@ printCoord({ x: 3, y: 7 });
 </CodePane>
 
 ---
-## Optional properties
+## Optional arguments
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+- Man kan markere argumenter som valgfrie ved at tilføje et ? efter argumentet.
+- Det er ofte en god ide at bruge default argumenter sammen med optional arguments.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
-function printName(obj: { first: string; last?: string }) {
+function printName(first: string; last?: string) {
   // ...
 }
-`}
-</CodePane>
-
-
----
-## Union type
-
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
-{`
-function printId(id: number | string) {
-  console.log("Your ID is: " + id);
+// With default argument
+function printName(first: string; last?: string = "Hansen") {
+  // ...
 }
 `}
 </CodePane>
@@ -1277,7 +1299,7 @@ function printId(id: number | string) {
 ---
 ## Type Alias
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 type Point = {
   x: number;
@@ -1299,7 +1321,7 @@ printCoord({ x: 100, y: 100 });
 - Kan bruges til at beskrive objekter
 - Interfaces kan bruge nedarvning
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 interface Point {
   x: number;
@@ -1314,12 +1336,53 @@ printCoord({ x: 100, y: 100 });
 </CodePane>
 
 ---
+## Type intersection
+
+Man kan kombinere typer med type intersections:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+type typeAB = typeA & typeB;
+`}
+</CodePane>
+
+---
+## Union type
+
+En union type er en type der kan indeholde flere typer.
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+function printId(id: number | string) {
+  console.log("Your ID is: " + id);
+}
+`}
+</CodePane>
+
+---
+## Enum type
+
+Brug unions i stedet for Enums: [Stackoverflow](https://stackoverflow.com/questions/40275832/typescript-has-unions-so-are-enums-redundant)
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+enum Status {
+  Idle = "idle",
+  Pending = "pending",
+  Resolved = "resolved",
+  Rejected = "rejected"
+};
+`}
+</CodePane>
+
+---
 ## Readonly
 
 - Man kan erklære en property i en type som readonly
 - Fungerer både i interfaces og type aliases
+- Readonly gør for properties hvad `const` gør for variabler.
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 interface Foo {
     readonly bar: number;
@@ -1353,7 +1416,7 @@ Bør man bruge types eller interfaces?
 - Generics er en måde at skrive kode der kan bruge flere typer
 - Generics er en slags type funktion der kan tage en type som parameter
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 type MyGenericType = <T>(arg: T) => T;
 `}
@@ -1374,6 +1437,11 @@ Typescript Generics
 
 ---
 ## Modulær Typescript
+
+
+<FlexBox>
+  <Image width="70%" src="../assets/modules.png"/>
+</FlexBox>
 
 ---
 ## Typescript lokalt projekt
@@ -1494,7 +1562,7 @@ Library:
 
 Man kan ikke bruge Array metoder på objekter, men man kan konvertere Arrays til Objekt med `Object.entries`.
 
-<CodePane language="javascript" theme={tomorrow} showLineNumbers={false}>
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
 {`
 const timesheetByName = {
   michael: { hours: "237"},
