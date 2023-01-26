@@ -1168,112 +1168,6 @@ Klasser og nedarvning
 - [Code Sandbox](https://codesandbox.io/)
 
 ---
-## Typescript lokalt projekt
-
-For at starte at basis Typescript projekt lokalt, kan du køre:
-
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ npm install -g typescript
-$ mkdir typescript-test-project && cd $_
-$ yarn add typescript --dev
-$ yarn tsc --init
-$ tsc [your-file.ts]
-`}
-</CodePane>
-
----
-## tsconfig.json (1/5)
-
-Du kan køre `tsc` med "flag" for eksempel:
-
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ tsc app.ts util.ts --target esnext --outfile index.js
-`}
-</CodePane>
-
-Hvilket "bygger" filerne `app.ts` og `util.ts` og sætter dem sammen til en enkelt fil, `index.js`
-
----
-## tsconfig.json (2/5)
-
-Det er ikke praktisk at holde styr på alle compiler options med flag.
-
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ tsc --init app.ts util.ts --target esnext --outfile index.js
-`}
-</CodePane>
-
-Med `--init` flaget kan du automatisk oprette en konfigurationsfil, tsconfig.json, hvor de flag du har sat bliver gemt.
-
----
-## tsconfig.json (3/5)
-
-Hvis du kører tsc uden options vil typescript compileren kigger efter en tsconfig.json fil og anvende de options der er angivet.
-
-Hvis du checker tsconfig.json ind i Git og sørger for at alle fremtidige ændringer opdateres i filen, er du sikker på at dine kolleger compiler med samme options som dig.
-
----
-## tsconfig.json (4/5)
-
-- `tsconfig.json` kan være intimiderende
-- Dokumentation: [typescriptlang.org/tsconfig](https://www.typescriptlang.org/tsconfig)
-- Vigtige options:
-  - files
-  - include
-  - exclude
-  - outDir / outFile
-
----
-## tsconfig.json (5/5)
-
-- Vigtige options (fortsat):
-  - strict
-  - target
-  - watchMode
-
----
-## Linting
-
-- Eslint
-- Tslint
-- Prettier
-
----
-## Poetic
-
-Poetic er en NPM pakke der gør det nemt at installere og konfigurere linters og prettier med forudbestemte basisindstillinger:
-
-https://www.npmjs.com/package/poetic
-
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ npx poetic
-`}
-</CodePane>
-
----
-## TS Node
-
-Med `ts-node` kan vi afvikle typescipt filer i et servermiljø eller vi kan starte en REPL for at eksperimentere og afprøve ting.
-
-Afvikle en fil:
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ npx ts-node file.ts
-`}
-</CodePane>
-
-Starte en REPL:
-<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
-{`
-$ npx ts-node
-`}
-</CodePane>
-
----
 ## Basis typer
 
 [Everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
@@ -1477,6 +1371,116 @@ Typescript Generics
 
 [![Edit typescript-generics](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/typescript-generics-4geyu6?fontsize=14&hidenavigation=1&theme=light)
 
+
+---
+## Modulær Typescript
+
+---
+## Typescript lokalt projekt
+
+For at starte at basis Typescript projekt lokalt, kan du køre:
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ npm install -g typescript
+$ mkdir typescript-test-project && cd $_
+$ yarn add typescript --dev
+$ yarn tsc --init
+$ tsc [your-file.ts]
+`}
+</CodePane>
+
+---
+## tsconfig.json (1/5)
+
+Du kan køre `tsc` med "flag" for eksempel:
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ tsc app.ts util.ts --target esnext --outfile index.js
+`}
+</CodePane>
+
+Hvilket "bygger" filerne `app.ts` og `util.ts` og sætter dem sammen til en enkelt fil, `index.js`
+
+---
+## tsconfig.json (2/5)
+
+Det er ikke praktisk at holde styr på alle compiler options med flag.
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ tsc --init app.ts util.ts --target esnext --outfile index.js
+`}
+</CodePane>
+
+Med `--init` flaget kan du automatisk oprette en konfigurationsfil, tsconfig.json, hvor de flag du har sat bliver gemt.
+
+---
+## tsconfig.json (3/5)
+
+Hvis du kører tsc uden options vil typescript compileren kigger efter en tsconfig.json fil og anvende de options der er angivet.
+
+Hvis du checker tsconfig.json ind i Git og sørger for at alle fremtidige ændringer opdateres i filen, er du sikker på at dine kolleger compiler med samme options som dig.
+
+---
+## tsconfig.json (4/5)
+
+- `tsconfig.json` kan være intimiderende
+- Dokumentation: [typescriptlang.org/tsconfig](https://www.typescriptlang.org/tsconfig)
+- Vigtige options:
+  - files
+  - include
+  - exclude
+  - outDir / outFile
+
+---
+## tsconfig.json (5/5)
+
+- Vigtige options (fortsat):
+  - strict
+  - target
+  - watchMode
+
+---
+## Linting
+
+- Eslint
+- Tslint
+- Prettier
+
+---
+## Poetic
+
+Poetic er en NPM pakke der gør det nemt at installere og konfigurere linters og prettier med forudbestemte basisindstillinger:
+
+https://www.npmjs.com/package/poetic
+
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ npx poetic
+`}
+</CodePane>
+
+---
+## TS Node
+
+Med `ts-node` kan vi afvikle typescipt filer i et servermiljø eller vi kan starte en REPL for at eksperimentere og afprøve ting.
+
+Afvikle en fil:
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ npx ts-node file.ts
+`}
+</CodePane>
+
+Starte en REPL:
+<CodePane language="bash" theme={tomorrow} showLineNumbers={false}>
+{`
+$ npx ts-node
+`}
+</CodePane>
+
 ---
 ## Runtime validering
 
@@ -1546,3 +1550,61 @@ console.log(sum(1, 2, 3, 4));
 // Expected output: 10
 `}
 </CodePane>
+
+---
+## Promises
+Promises er en måde at håndtere asynkronitet på. En promise kan være i tre forskellige tilstande:
+- Pending
+- Fulfilled
+- Rejected
+
+---
+## Promises
+
+Opret et Promise:
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("foo");
+  }, 300);
+});
+`}
+</CodePane>
+
+---
+## Promises
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const handleFulfilled = (value) => {
+  console.log(value);
+};
+const handleRejected = (error) => {
+  console.log(error);
+};
+myPromise.then(handleFulfilled, handleRejected)
+`}
+</CodePane>
+
+
+---
+## Async / Await
+
+<CodePane language="typescript" theme={tomorrow} showLineNumbers={false}>
+{`
+const run = async function() {
+  const result = await myPromise();
+  console.log(result);
+}
+run();
+`}
+</CodePane>
+
+---
+## Project
+
+Byg et SDK for en biograf
+
+[![Edit movie-exercise](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/movie-exercise-0p20tb?fontsize=14&hidenavigation=1&theme=light)
