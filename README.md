@@ -1,35 +1,15 @@
-SU-070 Typescript/Javascript
-=====================
+# SU-070-Typescript-Javascript
 
-Materiale for [dette kursus](https://www.superusers.dk/kursus/su0070/).
+Made with ❤️ and [Spectacle](https://github.com/FormidableLabs/spectacle/).
 
-## Slideshow
+## Running your presentation
 
-Slideshow kan tilgås på:
+- Run `yarn install` (or `npm install` or `pnpm install`) to install dependencies.
+- Run `yarn start` (or `npm start` or `pnpm start`) to start the presentation.
+- Edit `index.tsx` to add your presentation content.
 
-[https://zkwsk.github.io/SU-070-TypeScript-JavaScript](https://zkwsk.github.io/SU-070-TypeScript-JavaScript)
+## Building you presentation
 
+To build your presentation for a production deploy, run `yarn build` (or `npm build` or `pnpm build`).
 
-## Noter
-
-Noter i mindmap format findes i mappen /notes hhv. [PDF](/notes/notes.pdf) og [Xmind](notes.xmind) format.
-
-## Udvikling
-
-Slideshowet er en webapplikation, så man kan redigere og køre det lokalt:
-
-```
-yarn start
-```
-
-For at bygge projektet til mappen `/dist` kan man køre:
-
-```
-yarn build
-```
-
-For at bygge og deploye bygget til Github Pages kan man køre følgende:
-
-```
-yarn deploy
-```
+The build artifacts will be placed in the `dist` directory. If you'd like to change this location, edit `output.path` in `webpack.config.js`.
