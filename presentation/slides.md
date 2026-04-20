@@ -447,6 +447,13 @@ Number("32px") // NaN
 ## Control structures - if
 
 ```typescript
+if (x = 1) {
+  /* Hvis user input er 1 */
+  return 'a';
+}
+```
+
+```typescript
 if (userInput % 2) {
   /* Hvis user input er ulige */
   return 'a';
@@ -461,7 +468,7 @@ if (userInput % 2) {
   /* Hvis user input er ulige */
   return 'a';
 } else {
-  /* Hvis user input er ulige */
+  /* Hvis user input er lige */
   return 'b';
 }
 ```
@@ -471,7 +478,7 @@ if (userInput % 2) {
 Same principle as `if/else` but on one line:
 
 ```typescript
-return userInput % 2 ? 'a' : 'b';
+const result = userInput % 2 ? 'a' : 'b';
 ```
 ---
 ## AND/OR
