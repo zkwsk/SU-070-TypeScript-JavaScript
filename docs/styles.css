@@ -3,7 +3,6 @@ img {
   max-height: calc(100vh - 10em);
   width: auto;
   max-width: 100%;
-  border: 1px solid currentColor;
 }
 
 /* Table styling */
