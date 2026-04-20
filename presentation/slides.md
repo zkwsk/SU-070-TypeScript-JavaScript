@@ -1129,52 +1129,74 @@ Array functions
 
 - TypeScript = JavaScript + a static type system layered on top; all valid JS is valid TS
 - TS is transpiled down to plain JS; the type system is erased at build time
-- Course progression: core language → type modifiers → advanced types → utility types → narrowing → type-level programming → OOP → real-world patterns → React + TS → expert interviews
+- Course progression: core language → type modifiers → advanced types → utility types → narrowing → type-level programming → OOP → real-world patterns
+
+---
+
 - Goals:
   - Master every feature of the type system, from primitives to conditional/mapped types
   - Learn idiomatic, production-grade TS (not just syntax)
   - Build the muscle to read library types (React, tRPC, Zod, etc.)
   - Integrate TS with tooling: ESLint, bundlers, test runners, CI
 - Who it's for: JS developers who want type safety; teams scaling codebases beyond what JSDoc can handle
+
+---
+
 - Value proposition:
   - Errors caught at compile time instead of 3 AM pager alerts
   - Self-documenting code — types are the first-class docs
   - Editor superpowers: autocomplete, rename, go-to-definition, extract refactor
   - Onboarding: new devs can hover over any symbol and learn the API
   - Safer refactors: change a type, get a list of every call site to fix
-- Mindset: treat TS as a compile-time programming language, not just "JS with annotations"
 
+---
+ 
 ## 1.2 Installing TypeScript
 
 - Global install (handy for one-offs): `npm install -g typescript`
 - Per-project (preferred in real apps — pins the version):
-  ```bash
-  npm install --save-dev typescript
-  ```
+```bash
+npm install --save-dev typescript
+```
+
+---
+
 - Binary is `tsc` — the TypeScript compiler
-- Bootstrap a config: `tsc --init` → generates a commented `tsconfig.json`
+- Bootstrap a config: 
+```bash
+tsc --init
+```
+- Generates a commented `tsconfig.json`
 - Compile a file: `tsc file.ts` → emits `file.js`
-- Watch mode for dev loops: `tsc --watch`
-- Type-check only (no emit — common in CI): `tsc --noEmit`
-- VS Code bundles its own TS — pin workspace version via command palette → "TypeScript: Select TypeScript Version"
-- Use `npx tsc` to avoid global conflicts
+- Watch mode for dev loops: 
+```bash
+tsc --watch
+```
+- Type-check only (no emit — common in CI):
+```bash
+tsc --noEmit
+```
+---
 
 ## 1.3 tsconfig.json
 
 - Central compiler config — describes files, targets, and strictness
+---
 - Key options and why they matter:
-  - `target`: JS version to emit (`ES2020`, `ESNext`) — affects which syntax is down-leveled
-  - `module`: module format (`CommonJS`, `ESNext`, `NodeNext`) — must match your runtime
-  - `strict: true` — enables all strict flags (`noImplicitAny`, `strictNullChecks`, etc.)
-  - `noUncheckedIndexedAccess: true` — makes `arr[i]` return `T | undefined` (safer)
-  - `outDir` / `rootDir` — where emitted JS goes and where source lives
+  - `target`: JS version to emit (`ES2020`, `ESNext`)
+  - `module`: module format (`CommonJS`, `ESNext`)
+  - `strict: true` — enables all strict flags
+  - `noUncheckedIndexedAccess: true`
+  - `outDir` / `rootDir` — where source lives
   - `include` / `exclude` — glob-based file selection
   - `lib` — ambient libraries available (`DOM`, `ES2020`, `WebWorker`)
   - `jsx` — JSX handling (`react-jsx` for modern React)
+---
   - `esModuleInterop: true` — lets you `import x from "cjs-module"` cleanly
   - `skipLibCheck: true` — skip type-check of `node_modules` `.d.ts` (speeds up builds)
   - `paths` + `baseUrl` — path aliases like `@/components/*`
   - `declaration: true` — emits `.d.ts` files for library authors
+---
 - Example:
   ```json
   {
@@ -1191,7 +1213,11 @@ Array functions
     "include": ["src"]
   }
   ```
+---
+
 - Enable strict mode from day one — retrofitting later is exponentially more painful
+
+---
 
 ## 1.4 Running TypeScript
 
@@ -1201,9 +1227,12 @@ Array functions
   - Run directly via `ts-node` (classic) or `tsx` (modern, faster)
   - Bundle with Vite / esbuild / swc — they strip types and bundle in one pass
   - Deno / Bun support TS natively, no extra setup
+---
 - For library authors: ship JS + `.d.ts` declaration files; consumers never see your `.ts`
-- For apps: usually a bundler handles everything; `tsc --noEmit` is run purely to type-check
+- For apps: usually a bundler handles everything; 
 - Source maps (`sourceMap: true`) let debuggers map emitted JS back to your TS
+
+---
 
 ## 1.5 Editor & Tooling
 
@@ -1211,23 +1240,33 @@ Array functions
 - Essential features out of the box: hover types, go-to-def, find-all-refs, rename symbol, inline errors, code actions
 - Pair TS with:
   - ESLint + `@typescript-eslint/parser` + `@typescript-eslint/eslint-plugin` for lint rules
+
+---
+
   - Prettier for formatting (separate concern — doesn't type-check)
   - Husky + lint-staged to enforce `tsc --noEmit` and lint on commit
 - Workspace TS vs bundled TS: use "TypeScript: Select Version" so every dev uses the project's pinned version
 - CI gate: `tsc --noEmit` + `eslint .` + tests — no merges unless all three pass
 
+---
+
 # 2. Basic Types
+
+---
 
 ## 2.1 Primitive Types
 
 - Seven primitives: `string`, `number`, `boolean`, `null`, `undefined`, `symbol`, `bigint`
 - Annotate explicitly when needed; otherwise let TS infer:
   ```typescript
-  let name: string = "Zaki";   // explicit
+  let name: string = "Mike";   // explicit
   let age = 30;                // inferred as number
   let isAdmin: boolean = true;
   ```
 - Inference is usually the right default — annotate on function params, returns, and public APIs
+
+---
+
 - `any` — opts out of type checking entirely; silently accepts everything; avoid except as a last resort
 - `unknown` — the "type-safe any"; must be narrowed before use:
   ```typescript
@@ -1239,7 +1278,8 @@ Array functions
   ```
 - `never` — bottom type; represents a value that can never exist (e.g. function that throws or infinite loops)
 - `void` — function returns nothing meaningful; distinct from `undefined`
-- TS sees `null` and `undefined` as separate types under `strictNullChecks`
+
+---
 
 ## 2.2 Arrays & Tuples
 
@@ -1249,75 +1289,105 @@ Array functions
   const nums2: Array<number> = [1, 2, 3];
   ```
 - Mixed arrays via unions: `(string | number)[]`
+
+---
+
 - Tuples — fixed length, fixed types per index:
-  ```typescript
-  const pair: [string, number] = ["age", 30];
-  ```
+```typescript
+const pair: [string, number] = ["age", 30];
+```
 - Labeled tuples (improves hover docs):
-  ```typescript
-  type RGB = [r: number, g: number, b: number];
-  ```
-- Rest in tuples: `type Args = [cmd: string, ...flags: string[]];`
+```typescript
+type RGB = [r: number, g: number, b: number];
+```
+- Rest in tuples: 
+```typescript
+type Args = [cmd: string, ...flags: string[]];
+```
+
+---
+
 - Readonly arrays:
-  ```typescript
-  const frozen: readonly number[] = [1, 2, 3];
-  // frozen.push(4); // Error: push doesn't exist on readonly
-  ```
+```typescript
+const frozen: readonly number[] = [1, 2, 3];
+// frozen.push(4); // Error: push doesn't exist on readonly
+```
 - `as const` — deeply freezes a literal into a readonly tuple of literal types:
-  ```typescript
-  const COLORS = ["red", "green", "blue"] as const;
-  // type: readonly ["red", "green", "blue"]
-  type Color = typeof COLORS[number]; // "red" | "green" | "blue"
-  ```
+```typescript
+const COLORS = ["red", "green", "blue"] as const;
+// type: readonly ["red", "green", "blue"]
+type Color = typeof COLORS[number]; // "red" | "green" | "blue"
+```
+
+---
 
 ## 2.3 Objects
 
 - Object shape inline:
-  ```typescript
-  let user: { name: string; age: number } = { name: "Zaki", age: 30 };
-  ```
+```typescript
+let user: { name: string; age: number } = { name: "Mike", age: 30 };
+```
 - Optional properties with `?`:
-  ```typescript
-  type User = { name: string; age?: number };
-  ```
+```typescript
+type User = { name: string; age?: number };
+```
 - `readonly` on properties:
-  ```typescript
-  type Point = { readonly x: number; readonly y: number };
-  ```
+```typescript
+type Point = { readonly x: number; readonly y: number };
+```
+
+---
+
 - Excess property checks on object literals — catches typos:
-  ```typescript
-  // Error: 'nmae' does not exist on type '{ name: string }'
-  const u: { name: string } = { nmae: "Zaki" };
+```typescript
+// Error: 'nmae' does not exist on type '{ name: string }'
+const u: { name: string } = { nmae: "Mike" };
   ```
 - Index signatures for dynamic keys:
-  ```typescript
-  type Scores = { [player: string]: number };
-  ```
-- Combine fixed + index: `{ total: number; [month: string]: number }`
+```typescript
+type Scores = { [player: string]: number };
+```
+- Combine fixed + index: 
+```typescript
+{
+  total: number; // total must be present
+  [month: string]: number // in addition, there can be other keys which must have number values
+}
+```
+
+---
 
 ## 2.4 Type Aliases & Interfaces
 
 - `type` alias — flexible, can alias anything:
-  ```typescript
-  type ID = string | number;
-  type User = { name: string; id: ID };
-  ```
+```typescript
+type ID = string | number;
+type User = { name: string; id: ID };
+```
 - `interface` — describes object shapes; can be re-opened:
-  ```typescript
-  interface User { name: string }
-  interface User { age: number } // declaration merging
-  // User now has both name and age
-  ```
+```typescript
+interface User { name: string }
+interface User { age: number } // declaration merging
+// User now has both name and age
+```
+
+---
+
 - Differences to remember:
-  - `interface` can declare-merge; `type` cannot
+  - `interface` can declare-merge (declare interface multiple times)
   - `type` can alias unions, primitives, tuples; `interface` cannot
   - Both support extension:
-    ```typescript
-    interface Admin extends User { role: "admin" }
-    type Admin2 = User & { role: "admin" };
-    ```
+```typescript
+interface Admin extends User { role: "admin" }
+type Admin2 = User & { role: "admin" };
+```
+
+---
+
   - Error messages with `interface` are sometimes clearer
 - Rule of thumb: `interface` for public object shapes (esp. in libraries), `type` for unions, intersections, mapped/conditional types
+
+---
 
 ## 2.5 Literal & Union Types
 
@@ -1332,76 +1402,99 @@ Array functions
   type Status = "idle" | "loading" | "success" | "error";
   ```
 - Great for state machines, enums without the `enum` keyword, variant modeling
+
+---
+
+## 2.5 Literal & Union Types
+
 - Derive unions from runtime data with `as const`:
-  ```typescript
-  const STATUSES = ["idle", "loading", "success", "error"] as const;
-  type Status = typeof STATUSES[number]; // literal union
-  ```
-- Unions + narrowing is a core TS superpower — see Section 7
+
+```typescript
+const STATUSES = ["idle", "loading", "success", "error"] as const;
+type Status = typeof STATUSES[number]; // literal union
+```
+
+---
 
 # 3 Function Types
+
+---
 
 ## 3.1 Function Signatures
 
 - Annotate parameters and return type:
-  ```typescript
-  function add(a: number, b: number): number {
-    return a + b;
-  }
-  ```
-- Return types are usually inferred — still annotate on public APIs to lock the contract
+```typescript
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+- Return types are usually inferred (annotate on public APIs)
 - Arrow functions work identically:
-  ```typescript
-  const add = (a: number, b: number): number => a + b;
-  ```
+```typescript
+const add = (a: number, b: number): number => a + b;
+```
+
+---
+
+## 3.1 Function Signatures
+
 - Extract as a reusable function type:
-  ```typescript
-  type BinaryOp = (a: number, b: number) => number;
-  const mul: BinaryOp = (a, b) => a * b; // params inferred
-  ```
+```typescript
+type BinaryOp = (a: number, b: number) => number;
+const mul: BinaryOp = (a, b) => a * b; // params inferred
+```
 - `void` return — caller shouldn't use the value:
-  ```typescript
-  function log(msg: string): void { console.log(msg); }
-  ```
-- Callback typed with `void` return — the callback may still return something; TS just ignores it
+```typescript
+function log(msg: string): void { console.log(msg); }
+```
+
+---
 
 ## 3.2 Optional & Default Params
 
 - Optional parameters with `?` — implicit `T | undefined`:
-  ```typescript
-  function greet(name?: string) {
-    return `Hi ${name ?? "stranger"}`;
-  }
-  ```
+```typescript
+function greet(name?: string) {
+  return `Hi ${name ?? "stranger"}`;
+}
+```
 - Default values — param becomes optional and its type is inferred:
-  ```typescript
-  function greet(name = "world") { /* name: string */ }
-  ```
+```typescript
+function greet(name = "world") { /* name: string */ }
+```
 - Optional must come after required — otherwise call-site ergonomics break
+
+---
+
+## 3.2 Optional & Default Params
+
 - Rest parameters — variadic, typed as array:
-  ```typescript
-  function sum(...nums: number[]): number {
-    return nums.reduce((a, b) => a + b, 0);
-  }
-  ```
+```typescript
+function sum(...nums: number[]): number {
+  return nums.reduce((a, b) => a + b, 0);
+}
+```
 - Destructured params with types:
-  ```typescript
-  function createUser({ name, age = 0 }: { name: string; age?: number }) {}
-  ```
+```typescript
+function createUser({ name, age = 0 }: { name: string; age?: number }) {}
+```
+
+---
 
 ## 3.3 Overloads
 
 - Declare multiple call signatures + one implementation:
-  ```typescript
-  function parse(input: string): object;
-  function parse(input: object): string;
-  function parse(input: string | object): string | object {
-    return typeof input === "string" ? JSON.parse(input) : JSON.stringify(input);
-  }
-  ```
-- The implementation signature is invisible to callers — only the overloads show up
+```typescript
+function parse(input: string): object;
+function parse(input: object): string;
+function parse(input: string | object): string | object {
+  return typeof input === "string" ? JSON.parse(input) : JSON.stringify(input);
+}
+```
 - Use when the return type genuinely depends on argument shape/type
 - Often replaceable (and cleaner) with generics or conditional types
+
+---
 
 ## 3.4 `this` in Functions
 
@@ -1413,104 +1506,135 @@ Array functions
     this.disabled = true; // typed correctly
   }
   ```
-- Utility types: `ThisParameterType<F>`, `OmitThisParameter<F>`
+
+---
+
+- Utility types: 
+```typescript
+  ThisParameterType<F>`,
+  OmitThisParameter<F>
+````
 - In class methods TS types `this` automatically as the class type
+
+---
 
 ## 3.5 Generics in Functions
 
 - Introduce a type parameter to capture the input type:
-  ```typescript
-  function identity<T>(x: T): T { return x; }
-  const n = identity(42);     // T inferred as number
-  const s = identity<string>("hi"); // explicit
-  ```
+```typescript
+function identity<T>(x: T): T { return x; }
+const n = identity(42);     // T inferred as number
+const s = identity<string>("hi"); // explicit
+```
 - Common pattern — preserve array element type:
-  ```typescript
-  function first<T>(arr: T[]): T | undefined {
-    return arr[0];
-  }
-  ```
+```typescript
+function first<T>(arr: T[]): T | undefined {
+  return arr[0];
+}
+```
+
+---
+
 - Constrain type parameters with `extends`:
-  ```typescript
-  function prop<T extends object, K extends keyof T>(obj: T, key: K): T[K] {
-    return obj[key];
-  }
-  ```
+```typescript
+function prop<T extends object, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+```
 - Multiple params and defaults:
-  ```typescript
-  function pair<T, U = T>(a: T, b: U): [T, U] {
-    return [a, b];
-  }
-  ```
+```typescript
+function pair<T, U = T>(a: T, b: U): [T, U] {
+  return [a, b];
+}
+```
 - Inference usually "just works" — only annotate when TS picks a too-wide type
 
+---
+
 # Type Modifiers
+
+---
 
 ## 4.1 readonly
 
 - Blocks reassignment of the marked property
 - Works on object properties, arrays, tuples, class fields:
-  ```typescript
-  type Point = { readonly x: number; readonly y: number };
-  const p: Point = { x: 1, y: 2 };
-  // p.x = 3; // Error
-  ```
+```typescript
+type Point = { readonly x: number; readonly y: number };
+const p: Point = { x: 1, y: 2 };
+// p.x = 3; // Error
+```
 - `readonly` on arrays removes mutating methods (`push`, `pop`, `splice`):
-  ```typescript
-  const xs: readonly number[] = [1, 2, 3];
-  // xs.push(4); // Error
-  ```
+```typescript
+const xs: readonly number[] = [1, 2, 3];
+// xs.push(4); // Error
+```
+
+---
+## 4.1 readonly
+
 - `Readonly<T>` utility maps every property to readonly:
-  ```typescript
-  type FrozenUser = Readonly<User>;
-  ```
+```typescript
+type FrozenUser = Readonly<User>;
+```
 - Shallow only — nested objects still mutable unless you recurse
 - `readonly` is compile-time; objects remain mutable at runtime unless `Object.freeze`
+
+---
 
 ## 4.2 Optional (`?`)
 
 - On parameters — makes argument optional:
-  ```typescript
-  function greet(name?: string) {}
-  greet(); // allowed
-  ```
+```typescript
+function greet(name?: string) {}
+greet(); // allowed
+```
 - On properties — key may be absent entirely:
-  ```typescript
-  type User = { name: string; email?: string };
-  ```
-- Optional prop type is effectively `T | undefined` — must handle `undefined`
+```typescript
+type User = { name: string; email?: string };
+```
 - Pairs naturally with default values for ergonomic APIs
-- Distinct from `email: string | undefined` — the latter requires the key to be present (even if the value is `undefined`)
+- Distinct from:
+```typescript
+email: string | undefined // key must be present (even if the value is `undefined`)
+```
+
+---
 
 ## 4.3 `public` / `private` / `protected`
 
 - Access modifiers on class members:
-  ```typescript
-  class User {
-    public name: string;       // default
-    private password: string;  // class only
-    protected role: string;    // class + subclasses
-    constructor(name: string, pw: string, role: string) {
-      this.name = name;
-      this.password = pw;
-      this.role = role;
-    }
+```typescript
+class User {
+  public name: string;       // default
+  private password: string;  // class only
+  protected role: string;    // class + subclasses
+  constructor(name: string, pw: string, role: string) {
+    this.name = name;
+    this.password = pw;
+    this.role = role;
   }
-  ```
+}
+```
+
+---
+
 - Parameter properties — shorthand for declare+assign:
-  ```typescript
-  class User {
-    constructor(public name: string, private password: string) {}
-  }
-  ```
+```typescript
+class User {
+  constructor(public name: string, private password: string) {}
+}
+```
 - `private` is TS-only (enforced at compile time) — at runtime the field is accessible via JS
 - For true runtime privacy, use ECMAScript `#` fields:
-  ```typescript
-  class User {
-    #password: string;
-    constructor(pw: string) { this.#password = pw; }
-  }
-  ```
+```typescript
+class User {
+  #password: string;
+  constructor(pw: string) { this.#password = pw; }
+}
+```
+
+---
 
 ## 4.4 `static`
 
@@ -1524,6 +1648,8 @@ Array functions
 - Access with `ClassName.member`
 - Use cases: factory methods, counters, shared constants, utility functions
 - Static members can't reference class-level generic type parameters
+
+---
 
 ## 4.5 `abstract`
 
@@ -1541,6 +1667,8 @@ Array functions
   ```
 - Great for base classes with shared partial implementation + required slots
 
+---
+
 ## 4.6 `override`
 
 - Explicit marker that a method overrides a parent's:
@@ -1553,61 +1681,73 @@ Array functions
 - With `noImplicitOverride: true` in tsconfig, omitting `override` on an override is an error
 - Catches typos and silent behavior changes when parents are renamed
 
+---
+
 # 5 Advanced Types
+
+---
 
 ## 5.1 Intersections
 
 - Combine multiple types — all members required:
-  ```typescript
-  type Named = { name: string };
-  type Aged = { age: number };
-  type Person = Named & Aged; // { name: string; age: number }
-  ```
+```typescript
+type Named = { name: string };
+type Aged = { age: number };
+type Person = Named & Aged; // { name: string; age: number }
+```
 - Mixin pattern — compose shapes instead of extending classes:
-  ```typescript
-  type WithId<T> = T & { id: string };
-  type UserWithId = WithId<User>;
-  ```
+```typescript
+type WithId<T> = T & { id: string };
+type UserWithId = WithId<User>;
+```
+
+---
+## 5.1 Intersections
+
 - Conflicting member types produce `never`:
-  ```typescript
-  type Bad = { x: string } & { x: number }; // x: never
-  ```
+```typescript
+type Bad = { x: string } & { x: number }; // x: never
+```
 - Useful for adding meta-fields, merging request/response shapes, extending library types
+
+---
 
 ## 5.2 Discriminated Unions
 
 - A union of object types that share a common literal "tag":
-  ```typescript
-  type Shape =
-    | { kind: "circle"; radius: number }
-    | { kind: "square"; side: number }
-    | { kind: "rect"; width: number; height: number };
+```typescript
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; side: number }
+  | { kind: "rect"; width: number; height: number };
 
-  function area(s: Shape) {
-    switch (s.kind) {
-      case "circle": return Math.PI * s.radius ** 2;
-      case "square": return s.side ** 2;
-      case "rect":   return s.width * s.height;
-    }
+function area(s: Shape) {
+  switch (s.kind) {
+    case "circle": return Math.PI * s.radius ** 2;
+    case "square": return s.side ** 2;
+    case "rect":   return s.width * s.height;
   }
-  ```
-- Switch on the discriminant — TS narrows automatically to the matching variant
-- Model server responses, reducer actions, API results, UI states
-- Pair with exhaustiveness check (§7.9) to force updates when the union grows
+}
+```
+
+---
 
 ## 5.3 Conditional Types
 
 - Type-level `if/else`:
-  ```typescript
-  type IsString<T> = T extends string ? true : false;
-  type A = IsString<"hi">; // true
-  type B = IsString<42>;    // false
-  ```
+```typescript
+type IsString<T> = T extends string ? true : false;
+type A = IsString<"hi">; // true
+type B = IsString<42>;    // false
+```
 - Distribute over unions when the checked type is a naked type param:
-  ```typescript
-  type NonNull<T> = T extends null | undefined ? never : T;
-  type X = NonNull<string | null>; // string
-  ```
+```typescript
+type NonNull<T> = T extends null | undefined ? never : T;
+type X = NonNull<string | null>; // string
+```
+
+---
+
 - `infer` extracts parts:
   ```typescript
   type ReturnType<F> = F extends (...args: any) => infer R ? R : never;
@@ -1615,104 +1755,118 @@ Array functions
   ```
 - Foundation of most utility types (Exclude, Extract, ReturnType, Parameters)
 
+---
+
 ## 5.4 Mapped Types
 
 - Iterate keys of a type and transform values:
-  ```typescript
-  type Partial<T>  = { [K in keyof T]?: T[K] };
-  type Required<T> = { [K in keyof T]-?: T[K] };
-  type Readonly<T> = { readonly [K in keyof T]: T[K] };
-  type Mutable<T>  = { -readonly [K in keyof T]: T[K] };
-  ```
+```typescript
+type Partial<T>  = { [K in keyof T]?: T[K] };
+type Required<T> = { [K in keyof T]-?: T[K] };
+type Readonly<T> = { readonly [K in keyof T]: T[K] };
+type Mutable<T>  = { -readonly [K in keyof T]: T[K] };
+```
 - Modifier syntax: `+readonly` / `-readonly` / `+?` / `-?`
 - Key remapping via `as`:
-  ```typescript
-  type Getters<T> = {
-    [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];
-  };
-  ```
+```typescript
+type Getters<T> = {
+  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];
+};
+```
+---
+
 - Combine with conditional types to filter keys:
-  ```typescript
-  type StringKeys<T> = {
-    [K in keyof T]: T[K] extends string ? K : never;
-  }[keyof T];
-  ```
+```typescript
+type StringKeys<T> = {
+  [K in keyof T]: T[K] extends string ? K : never;
+}[keyof T];
+```
+
+---
 
 # 6 Built In Types
+
+---
 
 ## 6.1 Partial & Required
 
 - `Partial<T>` — every property optional:
-  ```typescript
-  type UserPatch = Partial<User>; // all fields optional
-  function update(id: string, patch: Partial<User>) {}
-  ```
+```typescript
+type UserPatch = Partial<User>; // all fields optional
+function update(id: string, patch: Partial<User>) {}
+```
 - `Required<T>` — strip optionality from every property:
-  ```typescript
-  type StrictUser = Required<User>;
-  ```
-- Both are mapped types under the hood (see §5.4)
+```typescript
+type StrictUser = Required<User>;
+```
+
+---
 
 ## 6.2 Pick & Omit
 
 - `Pick<T, K>` — keep only listed keys:
-  ```typescript
-  type UserPreview = Pick<User, "id" | "name">;
-  ```
+```typescript
+type UserPreview = Pick<User, "id" | "name">;
+```
 - `Omit<T, K>` — drop listed keys:
-  ```typescript
-  type PublicUser = Omit<User, "password" | "email">;
-  ```
+```typescript
+type PublicUser = Omit<User, "password" | "email">;
+```
 - Great for deriving DTOs, form models, API response types
+
+---
+
 - Note: standard `Omit` does NOT distribute across unions — use a custom `UnionOmit`:
   ```typescript
   type UnionOmit<T, K extends PropertyKey> =
     T extends unknown ? Omit<T, K> : never;
   ```
 
+---
+
 ## 6.3 Record
 
 - `Record<K, V>` — object keyed by `K` with values of type `V`:
-  ```typescript
-  type Scores = Record<string, number>;
-  type RouteMap = Record<"home" | "about" | "contact", string>;
-  ```
+```typescript
+type Scores = Record<string, number>;
+type RouteMap = Record<"home" | "about" | "contact", string>;
+```
 - Equivalent to `{ [key in K]: V }` — often more readable
 - Prefer `Record<"home" | "about", T>` over a plain index signature when keys are known
+
+---
 
 ## 6.4 Exclude, Extract, NonNullable
 
 - `Exclude<T, U>` — remove members of `U` from union `T`:
-  ```typescript
-  type Colors = "red" | "green" | "blue";
-  type NoRed = Exclude<Colors, "red">; // "green" | "blue"
-  ```
+```typescript
+type Colors = "red" | "green" | "blue";
+type NoRed = Exclude<Colors, "red">; // "green" | "blue"
+```
 - `Extract<T, U>` — keep only members assignable to `U`:
-  ```typescript
-  type Strings = Extract<string | number | boolean, string>; // string
-  ```
+```typescript
+type Strings = Extract<string | number | boolean, string>; // string
+```
 - `NonNullable<T>` — strip `null` and `undefined`:
-  ```typescript
-  type Safe = NonNullable<string | null | undefined>; // string
-  ```
+```typescript
+type Safe = NonNullable<string | null | undefined>; // string
+```
+
+---
 
 ## 6.5 ReturnType, Parameters
 
 - `ReturnType<F>` — extract a function's return type:
-  ```typescript
-  function makeUser() { return { id: "1", name: "Z" }; }
-  type User = ReturnType<typeof makeUser>;
-  ```
+```typescript
+function makeUser() { return { id: "1", name: "Z" }; }
+type User = ReturnType<typeof makeUser>;
+```
 - `Parameters<F>` — tuple of parameter types:
-  ```typescript
-  type Args = Parameters<typeof makeUser>; // []
-  ```
-- `ConstructorParameters<C>` — constructor arg tuple
-- `InstanceType<C>` — instance shape from a class constructor type:
-  ```typescript
-  class Box { value = 0; }
-  type BoxInstance = InstanceType<typeof Box>; // Box
-  ```
+```typescript
+type Args = Parameters<typeof makeUser>; // []
+```
+
+---
 
 ## 6.6 Awaited
 
@@ -1725,19 +1879,22 @@ Array functions
 - Replaces hand-rolled `UnwrapPromise<T>` utilities
 - Handles `PromiseLike` and arbitrary nesting
 
+---
+
 # 7 Type Narrowing
+
+---
 
 ## 7.1 typeof Narrowing
 
 - `typeof x === "string"` narrows `x` to `string` in the true branch:
-  ```typescript
-  function format(x: string | number) {
-    if (typeof x === "string") return x.toUpperCase(); // string
-    return x.toFixed(2);                                // number
-  }
-  ```
-- Checks: `"string" | "number" | "boolean" | "bigint" | "symbol" | "undefined" | "object" | "function"`
-- Note: `typeof null === "object"` — narrow with equality instead
+```typescript
+function format(x: string | number) {
+  if (typeof x === "string") return x.toUpperCase(); // string
+  return x.toFixed(2);                               // number
+}
+```
+---
 
 ## 7.2 instanceof Narrowing
 
@@ -1749,6 +1906,8 @@ Array functions
   ```
 - Works across module boundaries as long as the same prototype is used
 - Fails across iframes / realms — use a structural guard for cross-realm values
+
+---
 
 ## 7.3 in Operator
 
@@ -1763,6 +1922,8 @@ Array functions
   ```
 - Great for untagged unions where you can't add a `kind` discriminant
 
+---
+
 ## 7.4 Equality Narrowing
 
 - `===` and `!==` narrow both operands:
@@ -1774,6 +1935,8 @@ Array functions
   }
   ```
 - Literal equality narrows unions to that literal
+
+---
 
 ## 7.5 Truthiness Narrowing
 
@@ -1787,6 +1950,8 @@ Array functions
 - Gotcha: `0`, `""`, `NaN` are also falsy — may drop valid values
 - Prefer explicit `x != null` when you want to keep empty strings/zero
 
+---
+
 ## 7.6 Type Predicates
 
 - User-defined guards via `x is T` return type:
@@ -1798,6 +1963,8 @@ Array functions
   const strings = arr.filter(isString); // string[]
   ```
 - You must get the runtime check right — TS trusts the predicate blindly
+
+---
 
 ## 7.7 Assertion Functions
 
@@ -1811,12 +1978,16 @@ Array functions
     x.toUpperCase(); // narrowed to string
   }
   ```
+---
+
 - `asserts cond` variant narrows based on a boolean expression:
   ```typescript
   function assert(cond: unknown): asserts cond {
     if (!cond) throw new Error();
   }
   ```
+
+---
 
 ## 7.8 Discriminated Union Narrowing
 
@@ -1831,7 +2002,9 @@ Array functions
     return r.message;
   }
   ```
-- Gold standard for modeling state, API responses, reducer actions
+- Gold standard for modeling state, API responses, reducers actions
+
+---
 
 ## 7.9 Exhaustiveness Checks
 
@@ -1849,12 +2022,16 @@ Array functions
   ```
 - Make this a habit for state machines and action reducers
 
+---
+
 ## 7.10 Control-Flow Analysis
 
 - TS tracks narrowing through branches, assignments, returns, throws
 - Reassignment can widen the type back to the declared one
 - Narrowing persists into closures only when the variable is `const`
 - `let` narrowing may be lost if TS can't prove it wasn't reassigned between use and narrow
+
+---
 
 ## 7.11 never
 
@@ -1865,6 +2042,8 @@ Array functions
   ```
 - Unions with `never` collapse: `string | never === string`
 - Indispensable for exhaustiveness checks and filtering in mapped types
+
+---
 
 ## 7.12 unknown vs any
 
@@ -1879,102 +2058,131 @@ Array functions
   ```
 - Always prefer `unknown` for external/untrusted data (JSON, params, user input)
 
+---
+
 # 8 Type Programming
+
+---
 
 ## 8.1 keyof & typeof
 
 - `keyof T` — union of T's property names:
-  ```typescript
-  type User = { id: string; name: string; age: number };
-  type UserKey = keyof User; // "id" | "name" | "age"
-  ```
+```typescript
+type User = { id: string; name: string; age: number };
+type UserKey = keyof User; // "id" | "name" | "age"
+```
 - `typeof` at type level — get the static type of a runtime value:
-  ```typescript
-  const config = { port: 3000, host: "localhost" };
-  type Config = typeof config; // { port: number; host: string }
-  ```
+```typescript
+const config = { port: 3000, host: "localhost" };
+type Config = typeof config; // { port: number; host: string }
+```
+
+---
+## 8.1 keyof & typeof
+
 - Combined `keyof typeof` — turn an object's keys into a union:
-  ```typescript
-  const STATUS = { idle: 0, loading: 1, done: 2 } as const;
-  type StatusKey = keyof typeof STATUS; // "idle" | "loading" | "done"
-  ```
+```typescript
+const STATUS = { idle: 0, loading: 1, done: 2 } as const;
+type StatusKey = keyof typeof STATUS; // "idle" | "loading" | "done"
+```
+
+---
 
 ## 8.2 Indexed Access Types
 
+```typescript
+type User = { name: string, age: number}
+```
 - `T[K]` — the type of property `K` in `T`:
-  ```typescript
-  type UserName = User["name"]; // string
-  ```
+```typescript
+type UserName = User["name"]; // string
+```
 - Works with unions of keys:
-  ```typescript
-  type UserFields = User["name" | "age"]; // string | number
-  ```
+```typescript
+type UserFields = User["name" | "age"]; // string | number
+```
+
+---
+## 8.2 Indexed Access Types
+
 - Combined with `keyof`:
-  ```typescript
-  type UserValues = User[keyof User]; // string | number
-  ```
+```typescript
+type UserValues = User[keyof User]; // string | number
+```
 - Access array element type:
-  ```typescript
-  type Item = User[]["length"]; // number
-  type Elem = (typeof items)[number]; // element type of an array
-  ```
+```typescript
+type Item = User[]["length"]; // number
+type Elem = (typeof items)[number]; // element type of an array
+```
+
+---
 
 ## 8.3 Template Literal Types
 
 - Compose string types at the type level:
-  ```typescript
-  type Greeting = `hello ${string}`;
-  type EventName<T extends string> = `on${Capitalize<T>}`;
-  type ClickEvent = EventName<"click">; // "onClick"
-  ```
+```typescript
+type Greeting = `hello ${string}`;
+type EventName<T extends string> = `on${Capitalize<T>}`;
+type ClickEvent = EventName<"click">; // "onClick"
+```
 - Intrinsic helpers: `Uppercase<T>`, `Lowercase<T>`, `Capitalize<T>`, `Uncapitalize<T>`
 - Enables typed route params, event names, CSS-in-JS keys:
-  ```typescript
-  type Route = `/users/${string}` | `/posts/${number}`;
-  ```
+```typescript
+type Route = `/users/${string}` | `/posts/${number}`;
+```
+
+---
 
 ## 8.4 Recursive Types
 
 - Types that reference themselves:
-  ```typescript
-  type JSONValue =
-    | string | number | boolean | null
-    | JSONValue[]
-    | { [key: string]: JSONValue };
-  ```
+```typescript
+type JSONValue =
+  | string | number | boolean | null
+  | JSONValue[]
+  | { [key: string]: JSONValue };
+```
 - Common patterns: deep partial, deep readonly, nested tree, path types
 - TS enforces depth limits to keep the compiler fast:
-  ```typescript
-  type Flatten<T> = T extends (infer E)[] ? Flatten<E> : T;
-  ```
+```typescript
+type Flatten<T> = T extends (infer E)[] ? Flatten<E> : T;
+```
+
+---
 
 ## 8.5 infer Keyword
 
 - Declare a type variable inside `extends`:
-  ```typescript
-  type ReturnType<F>      = F extends (...a: any) => infer R ? R : never;
-  type FirstArg<F>        = F extends (a: infer A, ...rest: any) => any ? A : never;
-  type ElementOf<T>       = T extends (infer E)[] ? E : never;
-  type AwaitedOf<T>       = T extends Promise<infer U> ? U : T;
-  ```
+```typescript
+type ReturnType<F>      = F extends (...a: any) => infer R ? R : never;
+type FirstArg<F>        = F extends (a: infer A, ...rest: any) => any ? A : never;
+type ElementOf<T>       = T extends (infer E)[] ? E : never;
+type AwaitedOf<T>       = T extends Promise<infer U> ? U : T;
+```
 - Only valid inside a conditional type's true branch
 - Backbone of `ReturnType`, `Parameters`, `Awaited`, etc.
+
+---
 
 ## 8.6 Distributive Conditional Types
 
 - When the checked type is a naked type param, a conditional distributes over unions:
-  ```typescript
-  type ToArray<T> = T extends any ? T[] : never;
-  type R = ToArray<string | number>; // string[] | number[]
-  ```
+```typescript
+type ToArray<T> = T extends any ? T[] : never;
+type R = ToArray<string | number>; // string[] | number[]
+```
 - Opt out by wrapping in a tuple:
-  ```typescript
-  type ToArray2<T> = [T] extends [any] ? T[] : never;
-  type R2 = ToArray2<string | number>; // (string | number)[]
-  ```
+```typescript
+type ToArray2<T> = [T] extends [any] ? T[] : never;
+type R2 = ToArray2<string | number>; // (string | number)[]
+```
 - This is why `Exclude`, `Extract`, and `NonNullable` work the way they do
 
+---
+
 # 9 OOP
+
+---
 
 ## 9.1 Classes
 
@@ -1990,6 +2198,9 @@ Array functions
     greet() { return `Hi, ${this.name}`; }
   }
   ```
+
+---
+
 - Parameter property shorthand — declare + assign in one step:
   ```typescript
   class User {
@@ -2002,6 +2213,8 @@ Array functions
   const userLike = { id: "1", name: "Z", greet() { return ""; } };
   const u: User = userLike; // OK — shapes match
   ```
+
+---
 
 ## 9.2 Inheritance & Interfaces
 
@@ -2020,28 +2233,34 @@ Array functions
     greet() { return "hi"; }
   }
   ```
-- Implement multiple interfaces at once: `implements A, B, C`
-- `abstract` classes for shared partial implementation (§4.5)
+---
 
 ## 9.3 Generics in Classes
 
 - Class-level type parameters:
-  ```typescript
-  class Box<T> {
-    constructor(public value: T) {}
-    map<U>(f: (v: T) => U): Box<U> {
-      return new Box(f(this.value));
-    }
+```typescript
+class Box<T> {
+  constructor(public value: T) {}
+  map<U>(f: (v: T) => U): Box<U> {
+    return new Box(f(this.value));
   }
-  const b = new Box(10).map(n => n.toString()); // Box<string>
-  ```
+}
+const b = new Box(10).map(n => n.toString()); // Box<string>
+```
+
+---
+
+## 9.3 Generics in Classes
+
 - Constrain with `extends`:
-  ```typescript
-  class Store<T extends { id: string }> {
-    save(item: T) {}
-  }
-  ```
+```typescript
+class Store<T extends { id: string }> {
+  save(item: T) {}
+}
+```
 - Static members cannot reference class-level generics (use method-level generics instead)
+
+---
 
 ## 9.4 Decorators
 
@@ -2049,61 +2268,93 @@ Array functions
 - Stage-3 (standardized) decorators now supported natively in TS 5+
 - Legacy/experimental decorators still around via `experimentalDecorators: true`
 - Common uses: logging, dependency injection, validation, ORM mapping, route registration
+
+---
+
 - Example (stage-3):
-  ```typescript
-  function log(target: Function, ctx: ClassMethodDecoratorContext) {
-    return function (this: any, ...args: any[]) {
-      console.log(`calling ${String(ctx.name)}`, args);
-      return target.apply(this, args);
-    };
-  }
-  class API {
-    @log greet(name: string) { return `hi ${name}`; }
-  }
-  ```
+```typescript
+function log(target: Function, ctx: ClassMethodDecoratorContext) {
+  return function (this: any, ...args: any[]) {
+    console.log(`calling ${String(ctx.name)}`, args);
+    return target.apply(this, args);
+  };
+}
+class API {
+  @log greet(name: string) { return `hi ${name}`; }
+}
+```
+
+---
 
 # 10 Real World TypeScript
 
+---
+
 ## 10.1 Project Setup
 
-- Bootstrap with `tsc --init`, then harden:
-  - `strict: true`
-  - `noUncheckedIndexedAccess: true` — makes `arr[i]` be `T | undefined`
-  - `exactOptionalPropertyTypes: true` — distinguishes missing from undefined
-  - `noImplicitOverride: true`
+- Bootstrap
+```typescript
+tsc --init
+```
+- ...then harden:
+```typescript
+strict: true
+noUncheckedIndexedAccess: true` // makes `arr[i]` be `T | undefined
+exactOptionalPropertyTypes: true` // distinguishes missing from undefined
+noImplicitOverride: true
+```
+
+---
+
 - Pick a modern `target` (`ES2020+`) and `module` matching your runtime
-- Share a base tsconfig in monorepos: `"extends": "@acme/tsconfig/base.json"`
+- Share a base tsconfig in monorepos: 
+```typescript
+"extends": "@acme/tsconfig/base.json"
+```
 - Add ESLint with `@typescript-eslint` + Prettier from day one
+
+---
 
 ## 10.2 Module & Import Patterns
 
-- `import type` — type-only imports; erased entirely by the compiler:
+- `import type` (type-only imports; erased by compiler):
   ```typescript
   import type { User } from "./types";
   ```
-- `export type` — symmetric for re-exports
 - Path aliases in tsconfig:
-  ```json
-  { "baseUrl": ".", "paths": { "@/*": ["src/*"] } }
-  ```
+```json
+{ "baseUrl": ".", "paths": { "@/*": ["src/*"] } }
+```
 - Bundler must also understand the aliases (Vite/tsconfig-paths/etc.)
 - Barrel files (`index.ts` that re-exports everything) — nice DX, but hurts tree-shaking at scale
+
+---
 
 ## 10.3 Declaration Files (`.d.ts`)
 
 - Pure type declarations — no runtime code:
-  ```typescript
-  // types.d.ts
-  declare module "legacy-lib" {
-    export function doThing(x: number): string;
-  }
-  declare global {
-    interface Window { __APP_VERSION__: string }
-  }
-  ```
+```typescript
+// types.d.ts
+declare module "legacy-lib" {
+  export function doThing(x: number): string;
+}
+declare global {
+  interface Window { __APP_VERSION__: string }
+}
+```
 - Ship your library with `"declaration": true` so consumers get types
-- Use `declare module "x" { ... }` to type untyped packages without owning them
+
+---
+
+## 10.3 Declaration Files (`.d.ts`)
+
+- To type untyped packages without owning them:
+```
+declare module "x" { ... }
+``` 
 - Augment existing modules (e.g. add a property to Express `Request`)
+
+---
 
 ## 10.4 Migrating JS → TS
 
@@ -2111,25 +2362,36 @@ Array functions
 - Enable `allowJs: true` and `checkJs: true` — get TS errors inside `.js`
 - Use `// @ts-check` at the top of JS files for per-file opt-in
 - Annotate with JSDoc while still in JS:
-  ```javascript
-  /** @param {string} name @returns {string} */
-  function greet(name) { return `Hi ${name}`; }
-  ```
+```javascript
+/** @param {string} name @returns {string} */
+function greet(name) { return `Hi ${name}`; }
+```
+
+---
+
 - Start with `any` + `// @ts-expect-error`, tighten iteratively
 - Convert "from the bottom up" — files with the most dependents first so downstream code benefits
 - Matt Pocock's Sentry anecdote: utility files converted first unlock the rest
+
+---
 
 ## 10.5 Working with 3rd-party Libs
 
 - Prefer libraries that ship their own types (most modern ones do)
 - Fall back to DefinitelyTyped: `npm install -D @types/lodash`
 - No types available? Write a local ambient declaration:
-  ```typescript
-  // shims.d.ts
-  declare module "weird-legacy-lib";
-  ```
+```typescript
+// shims.d.ts
+declare module "weird-legacy-lib";
+```
+
+---
+## 10.5 Working with 3rd-party Libs
+
 - Augment existing module types via module declaration merging
 - Patch types temporarily with `patch-package` if upstream is wrong
+
+---
 
 ## 10.6 Testing with TS
 
@@ -2142,6 +2404,8 @@ Array functions
   ```
 - Treat broken types as broken tests — gate CI on `tsc --noEmit`
 
+---
+
 ## 10.7 Error Handling
 
 - With `useUnknownInCatchVariables: true`, caught errors are `unknown`:
@@ -2150,6 +2414,9 @@ Array functions
     if (err instanceof Error) console.log(err.message);
   }
   ```
+
+---
+
 - Model domain errors as discriminated unions or Result types:
   ```typescript
   type Result<T, E = Error> =
@@ -2158,15 +2425,25 @@ Array functions
   ```
 - Prefer returning Results over throwing across public APIs — types stay honest
 
+---
+
 ## 10.8 Performance
 
 - `skipLibCheck: true` — skip `.d.ts` in `node_modules` (usually safe, big speedup)
 - Prefer `interface` over `type` for very large object shapes (interface caching is faster)
 - Project references + build mode (`tsc -b`) for monorepos
+
+---
+## 10.8 Performance
+
 - Incremental builds: `"incremental": true` + committed build info file
 - Debug slow builds with `tsc --extendedDiagnostics` or `--generateTrace`
 
+---
+
 # 11 Conclusion
+
+---
 
 ## 11.1 Wrap-up
 
@@ -2178,371 +2455,8 @@ Array functions
 - "Think in types": model states, actions, and variants explicitly — narrowing does the rest
 - Pair TS with runtime validators (Zod, io-ts) for unknown inputs (APIs, forms, env vars)
 
-# 12 React + TypeScript
-
-## 12.1 PropTypes vs TS
-
-- PropTypes — React's legacy runtime check; dev-mode warnings in the console
-- TS — compile-time, richer, framework-agnostic
-- TS covers almost everything PropTypes does, plus:
-  - Full editor support, autocomplete
-  - Works across the full app (not just component boundaries)
-  - Refactors propagate
-- PropTypes still useful at true runtime boundaries receiving untyped data (rare now — use Zod)
-- General guidance: TS replaces PropTypes in any new React project
-
-## 12.2 Setup & Typing Props
-
-- Scaffold: `npm create vite@latest` → select `react-ts`
-- Type props via `type` or `interface`:
-  ```typescript
-  type ButtonProps = {
-    label: string;
-    onClick: () => void;
-    variant?: "primary" | "secondary";
-    children?: React.ReactNode;
-  };
-  function Button({ label, onClick, variant = "primary", children }: ButtonProps) {
-    return <button onClick={onClick}>{label}{children}</button>;
-  }
-  ```
-- Prefer explicit prop types over `React.FC` — better for generics, no implicit `children`
-- Children types:
-  - `React.ReactNode` — most permissive (strings, numbers, JSX, arrays, null, etc.)
-  - `React.ReactElement` — specifically JSX
-  - `JSX.Element` — single element
-- Extend native element props:
-  ```typescript
-  type ButtonProps = { outline?: boolean } & React.ComponentProps<"button">;
-  ```
-
-## 12.3 useState
-
-- Inferred when initial value is definitive:
-  ```typescript
-  const [count, setCount] = useState(0);   // number
-  const [name, setName] = useState("");    // string
-  ```
-- Explicit generic when the initial value is `null` or too narrow:
-  ```typescript
-  const [user, setUser] = useState<User | null>(null);
-  const [items, setItems] = useState<Item[]>([]);
-  ```
-- Functional updater is correctly typed:
-  ```typescript
-  setCount(prev => prev + 1);
-  ```
-- Status state pattern:
-  ```typescript
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  ```
-
-## 12.4 useRef
-
-- Two flavors: DOM ref and mutable box
-- DOM ref — initialize with `null`, TS ties the generic to the element:
-  ```typescript
-  const inputRef = useRef<HTMLInputElement>(null);
-  // inputRef.current: HTMLInputElement | null
-  inputRef.current?.focus();
-  ```
-- Mutable value box — value always defined, mutable across renders:
-  ```typescript
-  const countRef = useRef<number>(0);
-  countRef.current++; // doesn't trigger re-render
-  ```
-- Don't use refs to drive rendering — use state instead
-- Common pitfall: forgetting the `null` check for DOM refs
-
-## 12.5 useReducer
-
-- Model state and actions as types:
-  ```typescript
-  type State = { count: number };
-  type Action =
-    | { type: "increment"; by: number }
-    | { type: "decrement"; by: number }
-    | { type: "reset" };
-
-  function reducer(state: State, action: Action): State {
-    switch (action.type) {
-      case "increment": return { count: state.count + action.by };
-      case "decrement": return { count: state.count - action.by };
-      case "reset":     return { count: 0 };
-    }
-  }
-  const [state, dispatch] = useReducer(reducer, { count: 0 });
-  dispatch({ type: "increment", by: 1 });
-  ```
-- Discriminated union on `action.type` gives exhaustiveness out of the box
-- Great for complex forms, wizard flows, and undo/redo
-
-## 12.6 useContext
-
-- Generic context with a typed default:
-  ```typescript
-  type AuthCtx = { user: User | null; login: (u: User) => void };
-  const AuthContext = createContext<AuthCtx | null>(null);
-  ```
-- Custom hook to avoid null everywhere downstream:
-  ```typescript
-  function useAuth() {
-    const ctx = useContext(AuthContext);
-    if (!ctx) throw new Error("useAuth must be inside AuthProvider");
-    return ctx; // AuthCtx (non-null)
-  }
-  ```
-- Pattern used throughout the Calendar project — `useEvents()` hook over `EventsContext`
-
-## 12.7 Generic Components
-
-- Components can be generic via the function form:
-  ```typescript
-  type ListProps<T> = {
-    items: T[];
-    getKey: (item: T) => string;
-    renderItem: (item: T) => React.ReactNode;
-  };
-  function List<T>({ items, getKey, renderItem }: ListProps<T>) {
-    return <ul>{items.map(i => <li key={getKey(i)}>{renderItem(i)}</li>)}</ul>;
-  }
-  ```
-- Usage preserves the element type:
-  ```typescript
-  <List items={users} getKey={u => u.id} renderItem={u => u.name} />
-  ```
-- Combining generics with `forwardRef` is awkward — usually needs a helper cast
-- Great fit for `Table`, `Select`, `Autocomplete`, `VirtualList`
-
-## 12.8 Google Calendar Clone — Intro
-
-- Goal: build a typed Google Calendar clone end-to-end to practice React + TS
-- Stack: Vite + React + TypeScript + date-fns + CSS modules
-- Feature list:
-  - Month view grid with day cells
-  - Add / edit / delete events
-  - All-day events vs timed events (exclusive variants)
-  - Color-coded events from a fixed palette
-  - Modal dialog via `createPortal`
-  - Overflow handling when a day has too many events
-  - Persistence via `localStorage`
-- Focus areas: context/provider, custom hooks, discriminated unions for events, portals, and ResizeObserver
-
-## 12.9 Google Calendar Clone — Walkthrough
-
-- Event model uses intersection + discriminated union for all-day exclusivity:
-  ```typescript
-  const EVENT_COLORS = ["red", "green", "blue"] as const;
-  type EventColor = typeof EVENT_COLORS[number];
-
-  type Event = {
-    id: string;
-    name: string;
-    color: EventColor;
-    date: Date;
-  } & (
-    | { allDay: false; startTime: string; endTime: string }
-    | { allDay: true;  startTime?: never; endTime?: never }
-  );
-  ```
-- `UnionOmit` helper — `Omit` that distributes across unions so variants survive:
-  ```typescript
-  type UnionOmit<T, K extends PropertyKey> =
-    T extends unknown ? Omit<T, K> : never;
-  type EventInput = UnionOmit<Event, "id">;
-  ```
-- Events context + reducer-style helpers:
-  ```typescript
-  type EventsContextType = {
-    events: Event[];
-    addEvent: (e: UnionOmit<Event, "id">) => void;
-    updateEvent: (id: string, e: UnionOmit<Event, "id">) => void;
-    deleteEvent: (id: string) => void;
-  };
-  ```
-- Custom hook unwraps the context with a non-null guarantee:
-  ```typescript
-  function useEvents() {
-    const ctx = useContext(EventsContext);
-    if (!ctx) throw new Error("useEvents must be inside EventsProvider");
-    return ctx;
-  }
-  ```
-- `useLocalStorage<T>` custom hook persists state across reloads:
-  ```typescript
-  function useLocalStorage<T>(key: string, initial: T | (() => T)) {
-    const [value, setValue] = useState<T>(() => {
-      const raw = localStorage.getItem(key);
-      if (raw != null) return JSON.parse(raw) as T;
-      return typeof initial === "function" ? (initial as () => T)() : initial;
-    });
-    useEffect(() => { localStorage.setItem(key, JSON.stringify(value)); }, [key, value]);
-    return [value, setValue] as const;
-  }
-  ```
-- `Modal` component via `createPortal`:
-  ```typescript
-  function Modal({ isOpen, onClose, children }: ModalProps) {
-    if (!isOpen) return null;
-    return createPortal(
-      <div className="modal-overlay" onClick={onClose}>
-        <div className="modal" onClick={e => e.stopPropagation()}>{children}</div>
-      </div>,
-      document.body
-    );
-  }
-  ```
-- `OverflowContainer<T>` — generic component that clips items based on measured container size using `ResizeObserver`:
-  ```typescript
-  type OverflowContainerProps<T> = {
-    items: T[];
-    getKey: (item: T) => string | number;
-    renderItem: (item: T) => React.ReactNode;
-    renderOverflow: (amount: number) => React.ReactNode;
-  };
-  ```
-- Date math handled by `date-fns` (typed) — `startOfMonth`, `endOfMonth`, `eachDayOfInterval`, `addMonths`, `isSameDay`, `isSameMonth`
-- Form state typed with `useState` for each controlled field; `allDay` checkbox toggles between the two variants via narrowing
-- Event sorting rule: all-day first, then by `startTime` — encoded as a typed comparator
-
 ---
-## Exercise
 
-Type aliases and interfaces
-
-[![Edit type-aliases-and-interfaces](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/condescending-star-xedte4?fontsize=14&hidenavigation=1&theme=light)
-
----
-## Types vs. Interfaces
-
-Should you use types or interfaces?
-
-[typescriptlang.org](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces)
-[Matt Pocock](https://www.youtube.com/watch?v=zM9UPcIyyhQ)
-
----
-## Typescript Generics
-
-- Generics are a way to write code that can work with multiple types
-- Generics are a kind of type function that can take a type as a parameter
-
-```typescript
-type MyGenericType = <T>(arg: T) => T;
-```
-
----
-## Typescript Generics
-
-[10 Tips for Mastering TypeScript Generics](https://www.youtube.com/watch?v=dLPgQRbVquo)
-
----
-## Exercise
-
-Typescript Generics
-
-[![Edit typescript-generics](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/typescript-generics-4geyu6?fontsize=14&hidenavigation=1&theme=light)
-
-
----
-## Modular Typescript
-
-![Modules](./assets/modules.png)
-
----
-## Typescript local project
-
-To start a basic Typescript project locally, you can run:
-
-```bash
-$ npm install -g typescript
-$ mkdir typescript-test-project && cd $_
-$ yarn add typescript --dev
-$ yarn tsc --init
-$ tsc [your-file.ts]
-```
-
----
-## tsconfig.json (1/5)
-
-You can run `tsc` with "flags", for example:
-
-```bash
-$ tsc app.ts util.ts --target esnext --outfile index.js
-```
-
-Which "builds" the files `app.ts` and `util.ts` and combines them into a single file, `index.js`
-
----
-## tsconfig.json (2/5)
-
-It is not practical to keep track of all compiler options with flags.
-
-```bash
-$ tsc --init app.ts util.ts --target esnext --outfile index.js
-```
-
-With the `--init` flag you can automatically create a configuration file, tsconfig.json, where the flags you have set are saved.
-
----
-## tsconfig.json (3/5)
-
-If you run tsc without options, the typescript compiler will look for a tsconfig.json file and use the options specified there.
-
-If you check tsconfig.json into Git and make sure all future changes are updated in the file, you can be confident that your colleagues compile with the same options as you.
-
----
-## tsconfig.json (4/5)
-
-- `tsconfig.json` can be intimidating
-- Documentation: [typescriptlang.org/tsconfig](https://www.typescriptlang.org/tsconfig)
-- Important options:
-  - files
-  - include
-  - exclude
-  - outDir / outFile
-
----
-## tsconfig.json (5/5)
-
-- Important options (continued):
-  - strict
-  - target
-  - watchMode
-
----
-## Linting
-
-- Eslint
-- Tslint
-- Prettier
-
----
-## Poetic
-
-Poetic is an NPM package that makes it easy to install and configure linters and prettier with predefined base settings:
-
-https://www.npmjs.com/package/poetic
-
-```bash
-$ npx poetic
-```
-
----
-## TS Node
-
-With `ts-node` we can execute typescript files in a server environment or we can start a REPL to experiment and try things out.
-
-Execute a file:
-```bash
-$ npx ts-node file.ts
-```
-
-Start a REPL:
-```bash
-$ npx tsx // (previously npx ts-node)
-```
-
----
 ## Runtime validation
 
 Libraries:
