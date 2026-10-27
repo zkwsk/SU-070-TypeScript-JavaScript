@@ -117,3 +117,37 @@ type ToArray2<T> = [T] extends [any] ? T[] : never;
 type R2 = ToArray2<string | number>; // (string | number)[]
 ```
 - This is why `Exclude`, `Extract`, and `NonNullable` work the way they do
+
+---
+
+## Exercises (1/4)
+
+Use this object:
+```typescript
+const PRICES = { child: 60, adult: 120, senior: 80 } as const;
+```
+1. Derive `TicketType` (`"child" | "adult" | "senior"`) and `Price` (`60 | 120 | 80`) from `PRICES`.
+2. Write `getPrice(type: TicketType)`. Which return type does TypeScript infer?
+
+---
+
+## Exercises (2/4)
+
+3. Extract the type of a single cast member with an indexed access type:
+```typescript
+type Movie = { title: string; cast: { name: string; role: string }[] };
+```
+4. Create a `SeatId` type from `"A" | "B" | "C"` and `1 | 2 | 3 | 4`, allowing `"A1"` and `"C4"`. How many members does it have?
+
+---
+
+## Exercises (3/4)
+
+5. Write a recursive `DeepReadonly<T>`. Check that you can't change a nested property of a config object.
+6. Write `FirstArg<F>` and `PromiseValue<T>` using `infer`, and test them on your own functions.
+
+---
+
+## Exercises (4/4)
+
+7. Predict what `ToArray<string | number>` and `ToArray2<string | number>` from 8.6 resolve to. Then hover.

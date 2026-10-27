@@ -11,12 +11,10 @@ import tomorrow from 'react-syntax-highlighter/dist/cjs/styles/prism/tomorrow';
 // Make tomorrow available globally so the markdown can reference it
 (window as any).tomorrow = tomorrow;
 
-// Slide files in alphabetical order, limited to the part picked in scripts/start.mjs
+// Every slide file as one slideshow: part 1 before part 2, files in alphabetical order.
+// The numeric compare keeps a future "part 10" after "part 9"
 const slideFiles = require.context('./slides', true, /\.md$/);
-const selectedFiles = slideFiles
-  .keys()
-  .sort()
-  .filter((file) => !process.env.SLIDES_DIR || file.startsWith(`./${process.env.SLIDES_DIR}/`));
+const sortedFiles = slideFiles.keys().sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 
 const withImages = (md: string) =>
   md
@@ -38,7 +36,7 @@ const template = ({ slideNumber, numberOfSlides }: { slideNumber: number; number
 
 const Presentation = () => (
   <Deck template={template}>
-    {selectedFiles.map((file) => (
+    {sortedFiles.map((file) => (
       <MarkdownSlideSet key={file}>{withImages(slideFiles(file).default)}</MarkdownSlideSet>
     ))}
   </Deck>

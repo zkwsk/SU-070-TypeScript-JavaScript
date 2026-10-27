@@ -103,3 +103,30 @@ class API {
   @log greet(name: string) { return `hi ${name}`; }
 }
 ```
+
+---
+
+## Exercises (1/4)
+
+1. Create a class `Movie` with parameter properties `id`, `title` and `durationMinutes`. Add a getter `durationLabel` (`"2h 35m"`).
+2. Create `interface Bookable` with `book(seats: number): void` and `available(): number`.
+
+---
+
+## Exercises (2/4)
+
+3. Implement `Bookable` in a class `Screening` with an `id` and a `private` seat count. Throw an error when there aren't enough seats.
+4. Create `PremiumScreening extends Screening`, whose `book` logs a welcome message and calls `super.book()`.
+
+---
+
+## Exercises (3/4)
+
+5. Create a generic `Repository<T extends { id: string }>` with `add`, `findById` and `all`. Use it for movies and screenings.
+6. Assign an object literal with the same shape to a `Movie` variable. Then try the same with `Screening`. What happens, and why?
+
+---
+
+## Exercises (4/4)
+
+7. Bonus: Add the `@log` decorator from the slides to `Screening.book`.

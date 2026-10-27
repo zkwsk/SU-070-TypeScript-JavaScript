@@ -52,7 +52,7 @@ function greet(name = "world") { /* name: string */ }
 
 ## 3.2 Optional & Default Params
 
-- Rest parameters — variadic, typed as array:
+- Rest parameters — typed as array:
 ```typescript
 function sum(...nums: number[]): number {
   return nums.reduce((a, b) => a + b, 0);
@@ -132,3 +132,39 @@ function pair<T, U = T>(a: T, b: U): [T, U] {
 }
 ```
 - Inference usually "just works" — only annotate when TS picks a too-wide type
+
+---
+
+## Exercises (1/4)
+
+1. Create a function type `PriceCalculator` that takes `basePrice` and `seats` and returns a number. Implement `standardPrice` and `studentPrice` (20% off) with it.
+2. Write `totalPrice(...prices: number[]): number`.
+
+---
+
+## Exercises (2/4)
+
+3. Write `bookSeats(movie: string, seats = 1, note?: string)`. Call it with one, two and three arguments.
+4. Write `createBooking({ movie, seats })`, where `seats` is optional and defaults to `1`.
+
+---
+
+## Exercises (3/4)
+
+5. Give `toUpper` two overloads: a `string` returns a `string`, and a `string[]` returns a `string[]`.
+6. Write a generic `last<T>(items: T[]): T | undefined`. Which type do you get back for a `number[]`?
+
+---
+
+## Exercises (4/4)
+
+7. Write a generic `pluck` that returns one property from every item:
+```typescript
+const movies = [
+  { title: "Dune", year: 2021 },
+  { title: "Alien", year: 1979 },
+];
+const titles = pluck(movies, "title"); // string[]
+const years = pluck(movies, "year");   // number[]
+// pluck(movies, "rating");            // compile error
+```

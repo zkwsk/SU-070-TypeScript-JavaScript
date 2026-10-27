@@ -94,3 +94,47 @@ type Args = Parameters<typeof makeUser>; // []
   ```
 - Replaces hand-rolled `UnwrapPromise<T>` utilities
 - Handles `PromiseLike` and arbitrary nesting
+
+---
+
+## Exercises (1/4)
+
+Use this type:
+```typescript
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+};
+```
+1. Create `PublicUser` without `password` and `UserPreview` with only `id` and `name`.
+
+---
+
+## Exercises (2/4)
+
+2. Write `updateUser(id: string, patch: ...)`, where the patch accepts any subset of the fields except `id`.
+3. Create `CompleteUser`, where `phone` is required too.
+
+---
+
+## Exercises (3/4)
+
+4. Use `Record` to type the opening hours for every weekday. Leaving out a day should be an error:
+```typescript
+type Weekday = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+```
+5. From `"draft" | "published" | "archived" | null`, derive `VisibleStatus` (no `"archived"`, no `null`) and `HiddenStatus` (only `"archived"`).
+
+---
+
+## Exercises (4/4)
+
+6. Derive `Movie` and `FetchMovieArgs` from this function without writing the types by hand:
+```typescript
+async function fetchMovie(id: string, lang = "en") {
+  return { id, lang, title: "Dune", year: 2021 };
+}
+```

@@ -176,3 +176,51 @@ function format(x: string | number) {
   }
   ```
 - Always prefer `unknown` for external/untrusted data (JSON, params, user input)
+
+---
+
+## Exercises (1/5)
+
+1. Write `formatPrice(price: number | string)`. Numbers get two decimals (`"120.00 DKK"`), strings are returned as they are.
+2. Write `formatShowtime(time: Date | string)`, which calls `toLocaleTimeString()` on dates.
+
+---
+
+## Exercises (2/5)
+
+3. Write `describeEvent(e: Film | Concert)` using the `in` operator:
+```typescript
+type Film = { title: string; duration: number };
+type Concert = { artist: string; setlist: string[] };
+```
+
+---
+
+## Exercises (3/5)
+
+4. This function has a bug when `seats` is `0`. Find it and fix it:
+```typescript
+function seatsLabel(seats: number | null) {
+  if (seats) return `${seats} seats left`;
+  return "No information";
+}
+```
+
+---
+
+## Exercises (4/5)
+
+5. Write a type predicate `isFilm(x: unknown): x is Film`. Use it to filter a mixed array into a `Film[]`.
+6. Write `assertDefined<T>(value: T): asserts value is NonNullable<T>`. Use it on the result of `Array.find()`.
+
+---
+
+## Exercises (5/5)
+
+7. Write `bookingMessage(b: Booking)` with a `switch` and an exhaustiveness check. Then add a `"refunded"` status:
+```typescript
+type Booking =
+  | { status: "pending" }
+  | { status: "confirmed"; seat: string }
+  | { status: "cancelled"; reason: string };
+```

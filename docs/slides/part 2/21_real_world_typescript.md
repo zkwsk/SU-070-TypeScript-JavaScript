@@ -152,3 +152,34 @@ declare module "weird-legacy-lib";
 
 - Incremental builds: `"incremental": true` + committed build info file
 - Debug slow builds with `tsc --extendedDiagnostics` or `--generateTrace`
+
+---
+
+## Exercises (1/4)
+
+1. In an empty folder, run `npx tsc --init`. Turn on `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` and `noImplicitOverride`.
+
+---
+
+## Exercises (2/4)
+
+2. Write code that breaks under each of those settings, for example:
+```typescript
+const movies = ["Dune", "Alien"];
+const first = movies[0];
+console.log(first.toUpperCase()); // noUncheckedIndexedAccess
+```
+
+---
+
+## Exercises (3/4)
+
+3. Move your types to `types.ts` and use `import type` in `index.ts`. Run `npx tsc`: what happened to the import in `index.js`?
+4. Write a `legacy-cinema.d.ts` for the untyped package `legacy-cinema` that declares `getSeatMap(hall: string): string[][]`.
+
+---
+
+## Exercises (4/4)
+
+5. Write `parseSeat(input: string): Result<Seat, string>` using `Result` from 10.7. `"C12"` gives `{ row: "C", number: 12 }`, `"12C"` an error.
+6. Bonus: Write a Vitest test for `parseSeat`, with a type-level test using `expectTypeOf`.

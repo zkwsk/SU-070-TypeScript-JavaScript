@@ -163,3 +163,33 @@ type Admin2 = User & { role: "admin" };
 const STATUSES = ["idle", "loading", "success", "error"] as const;
 type Status = typeof STATUSES[number]; // literal union
 ```
+
+---
+
+## Exercises (1/4)
+
+Use the [TypeScript Playground](https://www.typescriptlang.org/play) or a local `.ts` file.
+1. Create a `Movie` type with a readonly `id: number`, `title: string`, `year: number` and an optional `rating: number`. Try to change the `id` of a movie.
+
+---
+
+## Exercises (2/4)
+
+2. Create a labeled tuple type `Showtime` with `hall`, `time` and `seatsLeft`. Make an array of three showtimes.
+3. Derive a `Genre` union from this array and add `genre: Genre` to `Movie`:
+```typescript
+const GENRES = ["drama", "comedy", "horror"] as const;
+```
+
+---
+
+## Exercises (3/4)
+
+4. Write `describe(input: unknown): string`. Return strings in uppercase, `"Number: 42"` for numbers and `"Unknown"` for anything else.
+5. Create a `TicketSales` type where `total: number` is required and any other key (a month) holds a number.
+
+---
+
+## Exercises (4/4)
+
+6. Rewrite `Movie` as an `interface`. Then create `interface Series extends Movie` with `seasons: number`.

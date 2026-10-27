@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { DefinePlugin } = require('webpack');
 
 module.exports = {
   mode: 'development',
@@ -23,7 +22,5 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './index.html' }),
-    // Set by scripts/start.mjs; empty means every slides directory
-    new DefinePlugin({ 'process.env.SLIDES_DIR': JSON.stringify(process.env.SLIDES_DIR || '') }),
   ]
 };

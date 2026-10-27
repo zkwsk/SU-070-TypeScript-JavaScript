@@ -129,3 +129,35 @@ class User {
   ```
 - With `noImplicitOverride: true` in tsconfig, omitting `override` on an override is an error
 - Catches typos and silent behavior changes when parents are renamed
+
+---
+
+## Exercises (1/5)
+
+1. Create a `Seat` type with readonly `row: string` and `number: number`, and an optional `reserved: boolean`. Try to change `row`.
+2. Create `const hall: readonly Seat[]`. Try `hall.push(...)`, then add a seat to a new array with spread syntax instead.
+
+---
+
+## Exercises (2/5)
+
+3. Create one type with `email?: string` and one with `email: string | undefined`. Which of them accepts `{}`?
+
+---
+
+## Exercises (3/5)
+
+4. Create a class `Ticket` with the parameter properties `public movie`, `private price` and `protected seat`. Try to read `ticket.price` outside the class.
+
+---
+
+## Exercises (4/5)
+
+5. Add a `static issued` counter that goes up in the constructor, and a static factory `Ticket.complimentary(movie, seat)`.
+6. Create `abstract class Screening` with `abstract ticketPrice(): number` and a `summary()` method. Implement `StandardScreening` and `ImaxScreening`.
+
+---
+
+## Exercises (5/5)
+
+7. Change `summary()` in `ImaxScreening` using `override`. Turn on `noImplicitOverride` and remove the keyword. What happens?

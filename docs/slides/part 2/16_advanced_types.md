@@ -98,3 +98,30 @@ type StringKeys<T> = {
   [K in keyof T]: T[K] extends string ? K : never;
 }[keyof T];
 ```
+
+---
+
+## Exercises (1/3)
+
+1. Create a `Timestamps` type (`createdAt`, `updatedAt`) and a generic `WithTimestamps<T>` using an intersection. Use it to create `StoredMovie`.
+2. Hover over `{ id: string } & { id: number }`. What is the type of `id`, and why?
+
+---
+
+## Exercises (2/3)
+
+3. Model a `Payment` as a discriminated union of `"card"` (`last4`), `"mobilepay"` (`phone`) and `"voucher"` (`code`). Write `describePayment` with a `switch`.
+4. Write a conditional type `IsArray<T>`. Then write `ElementType<T>` with `infer`, so `ElementType<string[]>` is `string`.
+
+---
+
+## Exercises (3/3)
+
+5. Write a mapped type `Nullable<T>` where every property can also be `null`.
+6. Write a mapped type `Setters<T>` that turns `{ title: string; year: number }` into:
+```typescript
+{
+  setTitle: (value: string) => void;
+  setYear: (value: number) => void;
+}
+```
