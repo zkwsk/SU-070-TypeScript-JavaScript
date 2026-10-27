@@ -14,10 +14,10 @@ Contains projects for exercises.
 
 - Change into the `/docs` directory: `cd docs`
 - Run `yarn install` (or `npm install` or `pnpm install`) to install dependencies.
-- Run `yarn start` (or `npm start` or `pnpm start`) to start the presentation.
-- Edit `index.tsx` to add your presentation content.
+- Run `yarn start` (or `npm start` or `pnpm start`) and use the arrow keys to pick which part of the course to present.
+- Add or edit slides in `docs/slides/<part>/`. Each directory (`part 1`, `part 2`, ...) is one slideshow and shows up in the picker automatically. Files are prefixed with two digits (`01_introduction.md`, `02_programming_basics.md`, ...) and are shown in alphabetical order.
 
-Tip: You can use the (/docs/slides.md)[slides.md] as notes. It is a markdown document that also serves as data for the slide deck, but it might be faster to skim and search in markdown.
+Tip: You can use the markdown files in [docs/slides](docs/slides) as notes. They also serve as data for the slide deck, but it might be faster to skim and search in markdown.
 
 ## Building you presentation
 
