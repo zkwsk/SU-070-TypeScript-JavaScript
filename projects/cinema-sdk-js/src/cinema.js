@@ -1,5 +1,10 @@
-// Al data gemmes i hukommelsen. Hvordan `state` er struktureret er op til dig –
-// forsiden viser blot hele objektet som JSON efter hvert kald.
+/**
+ * Cinema SDK
+ * 
+ * For at implementere i typescript skal du omdøbe filen til cinema.ts, 
+ * opdatere import i main.ts og tilføje relevante typer.
+ */
+
 export const state = {
   cinemas: [],
   users: [],
@@ -15,7 +20,7 @@ export function addMovies(cinemaId, movies) {
   throw new Error('addMovies er ikke implementeret endnu')
 }
 
-// Tilføjer en forestilling (et Date-objekt) til en films kalender i en biograf.
+// Tilføjer en forestilling til en films kalender i en biograf.
 export function addScreening(movieId, dateTime, cinemaId) {
   throw new Error('addScreening er ikke implementeret endnu')
 }
@@ -32,6 +37,12 @@ export function addFavoriteMovie(userId, movieId) {
 
 // Booker en plads til en forestilling. Uden userId er det en anonym booking.
 // En plads kan kun bookes én gang pr. forestilling.
-export function addBooking(screeningId, seatNumber, userId, cinemaId, movieId) {
+export function addBooking(
+  screeningId,
+  seatNumber,
+  userId,
+  cinemaId,
+  movieId,
+) {
   throw new Error('addBooking er ikke implementeret endnu')
 }
