@@ -16,7 +16,7 @@ export function addMovies(cinemaId, movies) {
 }
 
 // Tilføjer en forestilling (et Date-objekt) til en films kalender i en biograf.
-export function addScreening(cinemaId, movieId, dateTime) {
+export function addScreening(movieId, dateTime, cinemaId) {
   throw new Error('addScreening er ikke implementeret endnu')
 }
 
@@ -32,6 +32,6 @@ export function addFavoriteMovie(userId, movieId) {
 
 // Booker en plads til en forestilling. Uden userId er det en anonym booking.
 // En plads kan kun bookes én gang pr. forestilling.
-export function addBooking(screeningId, seatNumber, userId) {
+export function addBooking(screeningId, seatNumber, userId, cinemaId, movieId) {
   throw new Error('addBooking er ikke implementeret endnu')
 }

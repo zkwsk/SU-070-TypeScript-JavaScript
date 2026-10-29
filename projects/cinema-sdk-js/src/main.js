@@ -38,9 +38,9 @@ const forms = [
     fn: 'addScreening',
     title: 'Tilføj forestilling',
     fields: [
-      { name: 'cinemaId', label: 'Biograf-id', type: 'id', required: true },
       { name: 'movieId', label: 'Film-id', type: 'id', required: true },
       { name: 'dateTime', label: 'Tidspunkt', type: 'datetime', required: true },
+      { name: 'cinemaId', label: 'Biograf-id', type: 'id', required: true },
     ],
   },
   {
@@ -63,9 +63,11 @@ const forms = [
     fn: 'addBooking',
     title: 'Book plads',
     fields: [
-      { name: 'userId', label: 'Bruger-id (tom = anonym)', type: 'id' },
       { name: 'screeningId', label: 'Forestillings-id', type: 'id', required: true },
       { name: 'seatNumber', label: 'Pladsnummer', type: 'number', required: true },
+      { name: 'userId', label: 'Bruger-id (tom = anonym)', type: 'id' },
+      { name: 'cinemaId', label: 'Biograf-id', type: 'id', required: true },
+      { name: 'movieId', label: 'Film-id', type: 'id', required: true },
     ],
   },
 ]
