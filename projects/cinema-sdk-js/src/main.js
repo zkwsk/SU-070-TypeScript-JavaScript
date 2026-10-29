@@ -38,6 +38,7 @@ const forms = [
     fn: 'addScreening',
     title: 'Tilføj forestilling',
     fields: [
+      { name: 'cinemaId', label: 'Biograf-id', type: 'id', required: true },
       { name: 'movieId', label: 'Film-id', type: 'id', required: true },
       { name: 'dateTime', label: 'Tidspunkt', type: 'datetime', required: true },
     ],
